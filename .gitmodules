@@ -1,9 +1,9 @@
 [submodule "bgfx"]
 	path = Thirdparty\bgfx\bgfx
-	url = git@github.com:BanMing/bgfx.git
+	url = https://github.com/BanMing/bgfx.git
 [submodule "bx"]
 	path = Thirdparty\bgfx\bx
-	url = git@github.com:BanMing/bx.git
+	url = https://github.com/BanMing/bx.git
 [submodule "bimg"]
 	path = Thirdparty\bgfx\bimg
-	url = git@github.com:BanMing/bimg.git
+	url = https://github.com/BanMing/bimg.git
