@@ -1,1 +1,1 @@
-add_subdirectory_ex(bgfx)
+add_subdirectory(bgfx)
