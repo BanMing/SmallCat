@@ -16,4 +16,4 @@ file( GLOB EDTAA3_SOURCES ${BIMG_DIR}/3rdparty/edtaa3/*.cpp ${BIMG_DIR}/3rdparty
 
 add_library( edtaa3 STATIC ${EDTAA3_SOURCES} )
 target_include_directories( edtaa3 PUBLIC $<BUILD_INTERFACE:${BIMG_DIR}/3rdparty> )
-set_target_properties( edtaa3 PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( edtaa3 PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )

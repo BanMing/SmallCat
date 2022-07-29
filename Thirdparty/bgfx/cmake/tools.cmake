@@ -10,7 +10,7 @@
 
 if( BGFX_CUSTOM_TARGETS )
 	add_custom_target( tools )
-	set_target_properties( tools PROPERTIES FOLDER "bgfx/tools" )
+	set_target_properties( tools PROPERTIES FOLDER "Thirdparty/bgfx/tools" )
 endif()
 
 include( ${CMAKE_CURRENT_LIST_DIR}/tools/geometryc.cmake )

@@ -186,7 +186,7 @@ function( add_example ARG_NAME )
 	endif()
 
 	# Directory name
-	set_target_properties( example-${ARG_NAME} PROPERTIES FOLDER "bgfx/examples" )
+	set_target_properties( example-${ARG_NAME} PROPERTIES FOLDER "Thirdparty/bgfx/examples" )
 
 	if (IOS OR WIN32)
 		# on iOS we need to build a bundle so have to copy the data rather than symlink
@@ -207,7 +207,7 @@ endfunction()
 # Build all examples target
 if( BGFX_CUSTOM_TARGETS )
 	add_custom_target( examples )
-	set_target_properties( examples PROPERTIES FOLDER "bgfx/examples" )
+	set_target_properties( examples PROPERTIES FOLDER "Thirdparty/bgfx/examples" )
 endif()
 
 # Add common library for examples

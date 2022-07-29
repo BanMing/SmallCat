@@ -25,4 +25,4 @@ target_include_directories( astc-codec
 		$<BUILD_INTERFACE:${BIMG_DIR}/3rdparty>
 		$<BUILD_INTERFACE:${BIMG_DIR}/3rdparty/astc-codec>
 		$<BUILD_INTERFACE:${BIMG_DIR}/3rdparty/astc-codec/include> )
-set_target_properties( astc-codec PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( astc-codec PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )

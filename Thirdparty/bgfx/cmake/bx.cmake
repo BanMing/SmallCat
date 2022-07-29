@@ -93,4 +93,4 @@ elseif( UNIX )
 endif()
 
 # Put in a "bgfx" folder in Visual Studio
-set_target_properties( bx PROPERTIES FOLDER "bgfx" )
+set_target_properties( bx PROPERTIES FOLDER "Thirdparty/bgfx" )

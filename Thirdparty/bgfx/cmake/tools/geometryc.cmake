@@ -14,7 +14,7 @@ include( ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/meshoptimizer.cmake )
 
 add_executable( geometryc ${BGFX_DIR}/tools/geometryc/geometryc.cpp )
 target_compile_definitions( geometryc PRIVATE "-D_CRT_SECURE_NO_WARNINGS" )
-set_target_properties( geometryc PROPERTIES FOLDER "bgfx/tools" )
+set_target_properties( geometryc PROPERTIES FOLDER "Thirdparty/bgfx/tools" )
 target_link_libraries( geometryc bx bgfx-vertexlayout meshoptimizer )
 if( BGFX_CUSTOM_TARGETS )
 	add_dependencies( tools geometryc )

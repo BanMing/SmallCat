@@ -36,7 +36,7 @@ endif()
 if( MSVC )
 	set_target_properties( glcpp PROPERTIES COMPILE_FLAGS "/W0" )
 endif()
-set_target_properties( glcpp PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( glcpp PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )
 
 # mesa
 file( GLOB MESA_SOURCES ${BGFX_DIR}/3rdparty/glsl-optimizer/src/mesa/program/*.c ${BGFX_DIR}/3rdparty/glsl-optimizer/src/mesa/main/*.c )
@@ -49,7 +49,7 @@ endif()
 if( MSVC )
 	set_target_properties( mesa PROPERTIES COMPILE_FLAGS "/W0" )
 endif()
-set_target_properties( mesa PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( mesa PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )
 
 # glsl-optimizer
 file( GLOB GLSL-OPTIMIZER_SOURCES ${BGFX_DIR}/3rdparty/glsl-optimizer/src/glsl/*.cpp ${BGFX_DIR}/3rdparty/glsl-optimizer/src/glsl/*.c )
@@ -84,4 +84,4 @@ elseif(APPLE)
 		-Wno-deprecated-register
 	)
 endif()
-set_target_properties( glsl-optimizer PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( glsl-optimizer PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )

@@ -28,4 +28,4 @@ target_include_directories( webgpu
 	    $<BUILD_INTERFACE:${BGFX_DIR}/3rdparty/webgpu/include>
 )
 
-# set_target_properties( webgpu PROPERTIES FOLDER "bgfx/3rdparty" )
+# set_target_properties( webgpu PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )

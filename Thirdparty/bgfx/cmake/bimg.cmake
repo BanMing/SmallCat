@@ -42,4 +42,4 @@ target_include_directories( bimg
 target_link_libraries( bimg PUBLIC bx PRIVATE astc-codec astc edtaa3 etc1 etc2 iqa squish nvtt pvrtc tinyexr )
 
 # Put in a "bgfx" folder in Visual Studio
-set_target_properties( bimg PROPERTIES FOLDER "bgfx" )
+set_target_properties( bimg PROPERTIES FOLDER "Thirdparty/bgfx" )

@@ -40,7 +40,7 @@ target_include_directories( glslang PUBLIC
 	${BGFX_DIR}/3rdparty
 )
 
-set_target_properties( glslang PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( glslang PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )
 
 if( MSVC )
 	target_compile_options( glslang PRIVATE

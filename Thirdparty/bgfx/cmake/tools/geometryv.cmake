@@ -9,7 +9,7 @@
 # this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 add_executable( geometryv ${BGFX_DIR}/tools/geometryv/geometryv.cpp )
-set_target_properties( geometryv PROPERTIES FOLDER "bgfx/tools" )
+set_target_properties( geometryv PROPERTIES FOLDER "Thirdparty/bgfx/tools" )
 target_link_libraries( geometryv example-common )
 if(EMSCRIPTEN)
 	target_link_options( geometryv PRIVATE -sMAX_WEBGL_VERSION=2 )

@@ -16,4 +16,4 @@ file( GLOB MESHOPTIMIZER_SOURCES ${BGFX_DIR}/3rdparty/meshoptimizer/src/*.cpp ${
 
 add_library( meshoptimizer STATIC ${MESHOPTIMIZER_SOURCES} )
 target_include_directories( meshoptimizer PUBLIC ${BGFX_DIR}/3rdparty )
-set_target_properties( meshoptimizer PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( meshoptimizer PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )

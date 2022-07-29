@@ -16,4 +16,4 @@ file( GLOB ASTC_SOURCES ${BIMG_DIR}/3rdparty/astc/*.cpp ${BIMG_DIR}/3rdparty/ast
 
 add_library( astc STATIC ${ASTC_SOURCES} )
 target_include_directories( astc PUBLIC $<BUILD_INTERFACE:${BIMG_DIR}/3rdparty> )
-set_target_properties( astc PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( astc PROPERTIES FOLDER "Thirdparty/bgfx/3rdparty" )

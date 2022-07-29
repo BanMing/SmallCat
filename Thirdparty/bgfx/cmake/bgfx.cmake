@@ -130,7 +130,7 @@ if( NOT UNIX OR APPLE )
 endif()
 
 # Put in a "bgfx" folder in Visual Studio
-set_target_properties( bgfx PROPERTIES FOLDER "bgfx" )
+set_target_properties( bgfx PROPERTIES FOLDER "Thirdparty/bgfx" )
 
 # in Xcode we need to specify this file as objective-c++ (instead of renaming to .mm)
 if (XCODE)

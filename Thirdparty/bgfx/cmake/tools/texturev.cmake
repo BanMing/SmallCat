@@ -11,7 +11,7 @@
 include( CMakeParseArguments )
 
 add_executable( texturev ${BGFX_DIR}/tools/texturev/texturev.cpp )
-set_target_properties( texturev PROPERTIES FOLDER "bgfx/tools" )
+set_target_properties( texturev PROPERTIES FOLDER "Thirdparty/bgfx/tools" )
 target_link_libraries( texturev example-common )
 if (EMSCRIPTEN)
 	target_link_options( texturev PRIVATE -sMAX_WEBGL_VERSION=2 )
