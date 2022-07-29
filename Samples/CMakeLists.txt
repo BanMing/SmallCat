@@ -1,3 +1,4 @@
+add_subdirectory(Common)
 add_subdirectory(Hello)
 
 # Put in a "Samples" folder in Visual Studio
