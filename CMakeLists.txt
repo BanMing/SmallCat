@@ -10,10 +10,7 @@ set_property( GLOBAL PROPERTY USE_FOLDERS ON )
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-# include(macros)
-# include(sanitizers_support)
-# include(clang_tidy_support)
-# include(ide_support)
+include(macros)
 
 set( BUILD_SHARED_LIBS OFF CACHE BOOL "Build package with shared libraries." FORCE)
 
@@ -28,9 +25,9 @@ add_definitions(-DNOMINMAX)
 
 #enable_sanitizers("custom")
 
-# detect_platform()
-# print_info()
-# set_output_paths()
+detect_platform()
+print_info()
+set_output_paths()
 
 #enable_sanitizers("custom")
 
@@ -38,8 +35,10 @@ add_definitions(-DNOMINMAX)
 # print_info()
 # set_output_paths()
 
-add_subdirectory(Thirdparty)
-# set_project_custom_defines()
+add_subdirectory_ex(Thirdparty)
+set_project_custom_defines()
 
-add_subdirectory(Src)
-add_subdirectory(Samples)
+add_subdirectory_ex(Src)
+add_subdirectory_ex(Samples)
+
+install( TARGETS Hello DESTINATION examples )
