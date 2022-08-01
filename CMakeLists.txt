@@ -34,11 +34,11 @@ set_output_paths()
 # detect_platform()
 # print_info()
 # set_output_paths()
-
+add_executable(Tiga main.cpp)
 add_subdirectory_ex(Thirdparty)
 set_project_custom_defines()
 
 add_subdirectory_ex(Src)
-add_subdirectory_ex(Samples)
+# add_subdirectory_ex(Samples)
 
-install( TARGETS Hello DESTINATION examples )
+target_link_libraries( Tiga PUBLIC bgfx bx bimg bgfxcommon)

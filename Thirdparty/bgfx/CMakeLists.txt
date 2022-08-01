@@ -25,14 +25,14 @@ if (MSVC AND (MSVC_VERSION GREATER_EQUAL 1914))
     add_compile_options("/Zc:__cplusplus")
 endif()
 
-option( BGFX_BUILD_TOOLS                "Build bgfx tools."                             ON  )
-option( BGFX_BUILD_EXAMPLES             "Build bgfx examples."                          ON  )
-option( BGFX_INSTALL                    "Create installation target."                   ON  )
+option( BGFX_BUILD_TOOLS                "Build bgfx tools."                             OFF )
+option( BGFX_BUILD_EXAMPLES             "Build bgfx examples."                          OFF )
+option( BGFX_INSTALL                    "Create installation target."                   OFF )
 option( BGFX_INSTALL_EXAMPLES           "Install examples and their runtimes."          OFF )
 option( BGFX_CUSTOM_TARGETS             "Include convenience custom targets."           ON  )
 option( BGFX_AMALGAMATED                "Amalgamated bgfx build for faster compilation" OFF )
 option( BX_AMALGAMATED                  "Amalgamated bx build for faster compilation"   OFF )
-option( BGFX_CONFIG_MULTITHREADED       "Build bgfx with multithreaded configuration"   ON )
+option( BGFX_CONFIG_MULTITHREADED       "Build bgfx with multithreaded configuration"   OFF)
 option( BGFX_CONFIG_RENDERER_WEBGPU     "Enables the webgpu renderer"                   OFF )
 
 set( BGFX_OPENGL_VERSION   ""       CACHE STRING "Specify minimum opengl version" )
@@ -68,6 +68,8 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/shared.cmake )
 include( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/bx.cmake )
 include( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/bimg.cmake )
 include( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/bgfx.cmake )
+
+include( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/3rdparty/dear-imgui.cmake )
 
 if( BGFX_BUILD_TOOLS )
 	include( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/tools.cmake )
@@ -201,3 +203,5 @@ if( BGFX_INSTALL )
 		DESTINATION "${config_install_dir}"
 	)
 endif()
+
+target_link_libraries( bgfx PUBLIC dear-imgui )
