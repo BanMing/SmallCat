@@ -34,11 +34,15 @@ set_output_paths()
 # detect_platform()
 # print_info()
 # set_output_paths()
-add_executable(Tiga main.cpp)
+
+file(GLOB_RECURSE TigaSrc Src/*.h Src/*.cpp Src/*.hpp Src/*.c Src/*.cc )
+foreach(src ${TigaSrc})
+	message("Tiga src: [${src}]")
+endforeach()
+
+add_executable(Tiga ${TigaSrc})
 add_subdirectory_ex(Thirdparty)
 set_project_custom_defines()
 
-add_subdirectory_ex(Src)
-# add_subdirectory_ex(Samples)
 
-target_link_libraries( Tiga PUBLIC bgfx bx bimg bgfxcommon)
+target_link_libraries( Tiga PUBLIC bgfx bx bimg)
