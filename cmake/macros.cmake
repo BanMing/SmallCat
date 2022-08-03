@@ -20,17 +20,38 @@ macro(detect_platform)
    
     message(STATUS "BUILD_SHARED_LIBS >>> ${BUILD_SHARED_LIBS}")
 
-    if(MSVC)
-        add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)
-        add_definitions(-D_SCL_SECURE_NO_WARNINGS=1)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /bigobj /W3")
-    endif(MSVC)
+    # platform commond requirement
+    if( BGFX_WITH_GLFW )
+			find_package( glfw3 REQUIRED )
+			target_link_libraries( ${CMAKE_PROJECT_NAME} PUBLIC glfw )
+			target_compile_definitions( ${CMAKE_PROJECT_NAME} PUBLIC ENTRY_CONFIG_USE_GLFW )
+	elseif( BGFX_WITH_SDL )
+		find_package( SDL2 REQUIRED )
+		target_link_libraries( ${CMAKE_PROJECT_NAME} PUBLIC ${SDL2_LIBRARIES} )
+		target_compile_definitions( ${CMAKE_PROJECT_NAME} PUBLIC ENTRY_CONFIG_USE_SDL )
+	elseif( UNIX AND NOT APPLE )
+		target_link_libraries( ${CMAKE_PROJECT_NAME} PUBLIC X11 )
+	endif()
 
-    if(MINGW)
-        if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_definitions(-DDEBUG)
-        endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    endif(MINGW)
+    # platform properties
+    if( MSVC )
+		set_target_properties( ${CMAKE_PROJECT_NAME} PROPERTIES LINK_FLAGS "/ENTRY:\"mainCRTStartup\"" )
+	endif()
+
+	if( IOS )
+		set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES MACOSX_BUNDLE ON
+												  MACOSX_BUNDLE_GUI_IDENTIFIER ${CMAKE_PROJECT_NAME}
+												  MACOSX_BUNDLE_BUNDLE_VERSION 0
+												  MACOSX_BUNDLE_SHORT_VERSION_STRING 0
+												  XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer")
+	endif()
+
+    if (EMSCRIPTEN)
+		target_link_libraries(${CMAKE_PROJECT_NAME}
+			"-s PRECISE_F32=1"
+			"-s TOTAL_MEMORY=268435456"
+			"--memory-init-file 1")
+	endif()
 endmacro(detect_platform)
 
 macro(print_info)

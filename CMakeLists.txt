@@ -10,7 +10,7 @@ set_property( GLOBAL PROPERTY USE_FOLDERS ON )
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-include(macros)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/macros.cmake)
 
 set( BUILD_SHARED_LIBS OFF CACHE BOOL "Build package with shared libraries." FORCE)
 
@@ -23,26 +23,19 @@ else()
 endif()
 add_definitions(-DNOMINMAX)
 
-#enable_sanitizers("custom")
-
-detect_platform()
-print_info()
-set_output_paths()
-
-#enable_sanitizers("custom")
-
-# detect_platform()
-# print_info()
-# set_output_paths()
-
 file(GLOB_RECURSE TigaSrc Src/*.h Src/*.cpp Src/*.hpp Src/*.c Src/*.cc )
 foreach(src ${TigaSrc})
 	message("Tiga src: [${src}]")
 endforeach()
 
 add_executable(Tiga ${TigaSrc})
+
+detect_platform()
+print_info()
+set_output_paths()
+
 add_subdirectory_ex(Thirdparty)
 set_project_custom_defines()
 
 
-target_link_libraries( Tiga PUBLIC bgfx bx bimg)
+target_link_libraries( Tiga PUBLIC bgfx bx bimg dear-imgui)
