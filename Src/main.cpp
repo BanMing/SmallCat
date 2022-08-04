@@ -2,7 +2,7 @@
 #include <bx/file.h>
 #include <bx/sort.h>
 #include <bgfx/bgfx.h>
-
+#include <bgfx/platform.h>
 #include <iostream>
 
 #include "Samples/Hello/HelloSample.h"
