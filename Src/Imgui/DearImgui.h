@@ -1,13 +1,19 @@
 #ifndef _DEAR_IMGUI_H_
 #define _DEAR_IMGUI_H_
 #include <dear-imgui/imgui.h>
+
+#define IMGUI_MBUT_LEFT   0x01
+#define IMGUI_MBUT_RIGHT  0x02
+#define IMGUI_MBUT_MIDDLE 0x04
+
 void CreateGUI();
 
-void BeginGUIFrame(const char* name);
+void BeginGUIFrame(int32_t mouseX, int32_t mouseY, uint8_t button, int32_t scroll, uint16_t width, uint16_t height, int inputChar = -1, bgfx::ViewId viewId = 255);
 
 void EndGUIFrame();
 
 void ShutdownGUI();
+
 namespace ImGui
 {
 #define IMGUI_FLAGS_NONE        UINT8_C(0x00)

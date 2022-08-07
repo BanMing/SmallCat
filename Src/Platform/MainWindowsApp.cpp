@@ -13,9 +13,13 @@
 
 #include "MainApp.h"
 #include "../Imgui/DearImgui.h"
+#include "../Input/MouseState.h"
+
 namespace Tiga
 {
     Application *gApplication;
+    MouseState gMouseState;
+
     LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
     int32_t Run(Application *app, int argc, const char *const *argv)
@@ -130,7 +134,12 @@ namespace Tiga
 #pragma endregion Render
 
 #pragma region IMGUI Update
+            uint8_t button = (gMouseState.mButtons[MouseButton::Left] ? IMGUI_MBUT_LEFT : 0) |
+                             (gMouseState.mButtons[MouseButton::Right] ? IMGUI_MBUT_RIGHT : 0) |
+                             (gMouseState.mButtons[MouseButton::Middle] ? IMGUI_MBUT_MIDDLE : 0);
+            BeginGUIFrame(gMouseState.mX, gMouseState.mY, button, gMouseState.mZ, clientWidth, clientHeight);
             app->OnGUI();
+            EndGUIFrame();
 #pragma endregion IMGUI Update
         }
 
