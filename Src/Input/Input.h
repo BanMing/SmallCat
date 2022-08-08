@@ -1,95 +1,99 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 #include <iostream>
+#include <string>
+#include <map>
 
-#include "Key.h"
-#include "MouseButton.h"
+#include "Inputkeyboard.h"
+#include "InputMouse.h"
+#include "InputBinding.h"
+
 namespace Tiga
 {
-#define INPUT_BINDING_END                                      \
-    {                                                          \
-        Key::None, Modifier::None, 0, NULL, NULL \
-    }
-
-    typedef void (*InputBindingFn)(const void *userData);
-    struct InputBinding
+    struct Input
     {
-        Key::Enum mKey;
-        uint8_t mModifiers;
-        uint8_t mFlags;
-        InputBindingFn mFn;
-        const void *mUserData;
+        typedef std::map<std::string, const InputBinding *> InputBindingMap;
+        InputBindingMap mInputBindingsMap;
+        InputKeyboard mKeyboard;
+        InputMouse mMouse;
 
-        void Set(Key::Enum key, uint8_t modifiers, uint8_t flags, InputBindingFn fn, const void *userData)
+        Input() {}
+        ~Input() {}
+
+        void AddBindings(const char *name, const InputBinding *bindings)
         {
-            mKey = key;
-            mModifiers = modifiers;
-            mFlags = flags;
-            mFn = fn;
-            mUserData = userData;
+            mInputBindingsMap.insert(std::make_pair(std::string(name), bindings));
         }
 
-        void End()
+        void RemoveBindings(const char *name)
         {
-            mKey = Key::None;
-            mModifiers = Modifier::None;
-            mFlags = 0;
-            mFn = NULL;
-            mUserData = NULL;
+            InputBindingMap::iterator it = mInputBindingsMap.find(std::string(name));
+            if (it != mInputBindingsMap.end())
+            {
+                mInputBindingsMap.erase(it);
+            }
+        }
+
+        void Process(const InputBinding *bindings)
+        {
+            for (const InputBinding *binding = bindings; binding->mKey != Key::None; binding++)
+            {
+                uint8_t modifiers;
+                bool down = InputKeyboard::DecodeKeyState(mKeyboard.mKey[binding->mKey], modifiers);
+
+                if (binding->mFlags == 1)
+                {
+                    if (down)
+                    {
+                        if (modifiers == binding->mModifiers && !mKeyboard.mOnce[binding->mKey])
+                        {
+                            if (NULL == binding->mFn)
+                            {
+                                // cmd execit
+                            }
+                            else
+                            {
+                                binding->mFn(binding->mUserData);
+                            }
+                            mKeyboard.mOnce[binding->mKey] = true;
+                        }
+                    }
+                    else
+                    {
+                        mKeyboard.mOnce[binding->mKey] = false;
+                    }
+                }
+                else
+                {
+                    if (down && modifiers == binding->mModifiers)
+                    {
+                        if (NULL == binding->mFn)
+                        {
+                            // cmd execit
+                        }
+                        else
+                        {
+                            binding->mFn(binding->mUserData);
+                        }
+                    }
+                }
+            }
+        }
+
+        void Process()
+        {
+            for (InputBindingMap::const_iterator it = mInputBindingsMap.begin(); it != mInputBindingsMap.end(); it++)
+            {
+                Process(it->second);
+            }
+        }
+
+        void Reset()
+        {
+            mMouse.Reset();
+            mKeyboard.Reset();
         }
     };
-
-    ///
-    void InputInit();
-
-    ///
-    void InputShutdown();
-
-    ///
-    void InputAddBindings(const char *_name, const InputBinding *_bindings);
-
-    ///
-    void InputRemoveBindings(const char *_name);
-
-    ///
-    void InputProcess();
-
-    ///
-    void InputSetKeyState(Key::Enum _key, uint8_t _modifiers, bool _down);
-
-    ///
-    bool inputGetKeyState(Key::Enum _key, uint8_t *_modifiers = NULL);
-
-    ///
-    uint8_t InputGetModifiersState();
-
-    /// Adds single UTF-8 encoded character into input buffer.
-    void InputChar(uint8_t _len, const uint8_t _char[4]);
-
-    /// Returns single UTF-8 encoded character from input buffer.
-    const uint8_t *InputGetChar();
-
-    /// Flush internal input buffer.
-    void InputCharFlush();
-
-    ///
-    void InputSetMouseResolution(uint16_t _width, uint16_t _height);
-
-    ///
-    void InputSetMousePos(int32_t _mx, int32_t _my, int32_t _mz);
-
-    ///
-    void InputSetMouseButtonState(MouseButton::Enum _button, uint8_t _state);
-
-    ///
-    void InputSetMouseLock(bool _lock);
-
-    ///
-    void InputGetMouse(float _mouse[3]);
-
-    ///
-    bool InputIsMouseLocked();
-
 } // namespace Tiga
 
-#endif
+#endif //_INPUT_H_

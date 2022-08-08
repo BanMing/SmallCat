@@ -1,6 +1,5 @@
 #ifndef _INPUTMOUSE_H_
 #define _INPUTMOUSE_H_
-
 #include <bx/allocator.h>
 
 #include "MouseButton.h"

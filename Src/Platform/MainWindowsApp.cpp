@@ -8,12 +8,14 @@
 #include <bx/timer.h>
 #include <bx/uint32_t.h>
 #include <iostream>
+#include <bx/allocator.h>
 
 #include <Windows.h>
 
 #include "MainApp.h"
 #include "../Imgui/DearImgui.h"
 #include "../Input/MouseState.h"
+#include "../Input/InputSystem.h"
 
 namespace Tiga
 {
