@@ -2,7 +2,7 @@
 #define _BGFXUILS_H_ 
 #include <bx/allocator.h>
 
-bx::AllocatorI* getDefaultAllocator();
-bx::AllocatorI* getAllocator();
+bx::AllocatorI* GetDefaultAllocator();
+bx::AllocatorI* GetAllocator();
 
 #endif//_BGFXUILS_H_

@@ -2,17 +2,20 @@
 #define _MOUSEBUTTON_H_
 namespace Tiga
 {
-    struct MouseButton
+    namespace Input
     {
-        enum Enum
+        struct MouseButton
         {
-            None,
-            Left,
-            Middle,
-            Right,
+            enum Enum
+            {
+                None,
+                Left,
+                Middle,
+                Right,
 
-            Count
+                Count
+            };
         };
-    };
+    } // namespace Input
 } // namespace Tiga
 #endif

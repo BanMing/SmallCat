@@ -1,63 +1,133 @@
+#include <bx/allocator.h>
+
 #include "Input.h"
 #include "InputSystem.h"
 #include "../Utils/BgfxUtils.h"
 
 namespace Tiga
 {
-    static Input *sInput;
-
-    ///
-    void InputInit()
+    namespace Input
     {
-        sInput = BX_NEW(ge)
-    }
+        static Input *sInput;
 
-    ///
-    void InputShutdown();
+        ///
+        void InputInit()
+        {
+            sInput = BX_NEW(GetAllocator(), Input);
+        }
 
-    ///
-    void InputAddBindings(const char *name, const InputBinding *bindings);
+        ///
+        void InputShutdown()
+        {
+            BX_DELETE(GetAllocator(), sInput);
+        }
 
-    ///
-    void InputRemoveBindings(const char *name);
+        ///
+        void InputAddBindings(const char *name, const InputBinding *bindings)
+        {
+            sInput->AddBindings(name, bindings);
+        }
 
-    ///
-    void InputProcess();
+        ///
+        void InputRemoveBindings(const char *name)
+        {
+            sInput->RemoveBindings(name);
+        }
 
-    ///
-    void InputSetKeyState(Key::Enum key, uint8_t modifiers, bool down);
+        ///
+        void InputProcess()
+        {
+            sInput->Process();
+        }
 
-    ///
-    bool inputGetKeyState(Key::Enum key, uint8_t *modifiers = NULL);
+        ///
+        void InputSetKeyState(Key::Enum key, uint8_t modifiers, bool down)
+        {
+            sInput->mKeyboard.SetKeyState(key, modifiers, down);
+        }
 
-    ///
-    uint8_t InputGetModifiersState();
+        ///
+        bool inputGetKeyState(Key::Enum key, uint8_t *modifiers = NULL)
+        {
+            return sInput->mKeyboard.GetKeyState(key, modifiers);
+        }
 
-    /// Adds single UTF-8 encoded character into input buffer.
-    void InputChar(uint8_t len, const uint8_t chars[4]);
+        ///
+        uint8_t InputGetModifiersState()
+        {
+            return sInput->mKeyboard.GetModifiersState();
+        }
 
-    /// Returns single UTF-8 encoded character from input buffer.
-    const uint8_t *InputGetChar();
+        /// Adds single UTF-8 encoded character into input buffer.
+        void InputChar(uint8_t len, const uint8_t chars[4])
+        {
+            sInput->mKeyboard.PushChar(len, chars);
+        }
 
-    /// Flush internal input buffer.
-    void InputCharFlush();
+        /// Returns single UTF-8 encoded character from input buffer.
+        const uint8_t *InputGetChar()
+        {
+            return sInput->mKeyboard.PopChar();
+        }
 
-    ///
-    void InputSetMouseResolution(uint16_t width, uint16_t height);
+        /// Flush internal input buffer.
+        void InputCharFlush()
+        {
+            sInput->mKeyboard.CharFlush();
+        }
 
-    ///
-    void InputSetMousePos(int32_t mouseX, int32_t mouseY, int32_t mouseZ);
+        ///
+        void InputSetMouseResolution(uint16_t width, uint16_t height)
+        {
+            sInput->mMouse.SetResolution(width, height);
+        }
 
-    ///
-    void InputSetMouseButtonState(MouseButton::Enum button, uint8_t state);
+        ///
+        void InputSetMousePos(int32_t mouseX, int32_t mouseY, int32_t mouseZ)
+        {
+            sInput->mMouse.SetPos(mouseX, mouseY, mouseZ);
+        }
 
-    ///
-    void InputSetMouseLock(bool lock);
+        ///
+        void InputSetMouseButtonState(MouseButton::Enum button, uint8_t state)
+        {
+            sInput->mMouse.SetButtonState(button, state);
+        }
 
-    ///
-    void InputGetMouse(float mouse[3]);
+        ///
+        void InputSetMouseLock(bool lock)
+        {
+            sInput->mMouse.mLock = lock;
+            if (sInput->mMouse.mLock != lock)
+            {
+                sInput->mMouse.mLock = lock;
+                // WindowHandle deaultWindow={0};
+                // SetMouseLock(deaultWindow, lock);
+                if (lock)
+                {
+                    sInput->mMouse.mNorm[0] = 0.0f;
+                    sInput->mMouse.mNorm[1] = 0.0f;
+                    sInput->mMouse.mNorm[2] = 0.0f;
+                }
+            }
+        }
 
-    ///
-    bool InputIsMouseLocked();
+        ///
+        void InputGetMouse(float mouse[3])
+        {
+            mouse[0] = sInput->mMouse.mNorm[0];
+            mouse[1] = sInput->mMouse.mNorm[1];
+            mouse[2] = sInput->mMouse.mNorm[2];
 
+            sInput->mMouse.mNorm[0] = 0.0f;
+            sInput->mMouse.mNorm[1] = 0.0f;
+            sInput->mMouse.mNorm[2] = 0.0f;
+        }
+
+        ///
+        bool InputIsMouseLocked()
+        {
+            return sInput->mMouse.mLock;
+        }
+    } // namespace Input
 } // namespace Tiga

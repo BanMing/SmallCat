@@ -2,9 +2,8 @@
 
 namespace Tiga
 {
-    bx::AllocatorI *g_allocator = getDefaultAllocator();
-#if ENTRY_CONFIG_IMPLEMENT_DEFAULT_ALLOCATOR
-    bx::AllocatorI *getDefaultAllocator()
+    bx::AllocatorI *g_allocator = GetDefaultAllocator();
+    bx::AllocatorI *GetDefaultAllocator()
     {
         BX_PRAGMA_DIAGNOSTIC_PUSH();
         BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4459); // warning C4459: declaration of 's_allocator' hides global declaration
@@ -13,13 +12,12 @@ namespace Tiga
         return &s_allocator;
         BX_PRAGMA_DIAGNOSTIC_POP();
     }
-#endif // ENTRY_CONFIG_IMPLEMENT_DEFAULT_ALLOCATOR
 
-    bx::AllocatorI *getAllocator()
+    bx::AllocatorI *GetAllocator()
     {
         if (NULL == g_allocator)
         {
-            g_allocator = getDefaultAllocator();
+            g_allocator = GetDefaultAllocator();
         }
 
         return g_allocator;

@@ -5,21 +5,24 @@
 
 namespace Tiga
 {
-	struct MouseState
+	namespace Input
 	{
-		MouseState()
-			: mX(0), mY(0), mZ(0)
+		struct MouseState
 		{
-			for (uint32_t ii = 0; ii < MouseButton::Count; ++ii)
+			MouseState()
+				: mX(0), mY(0), mZ(0)
 			{
-				mButtons[ii] = MouseButton::None;
+				for (uint32_t ii = 0; ii < MouseButton::Count; ++ii)
+				{
+					mButtons[ii] = MouseButton::None;
+				}
 			}
-		}
 
-		int32_t mX;
-		int32_t mY;
-		int32_t mZ;
-		uint8_t mButtons[MouseButton::Count];
-	};
+			int32_t mX;
+			int32_t mY;
+			int32_t mZ;
+			uint8_t mButtons[MouseButton::Count];
+		};
+	} // namespace Input
 } // namespace Tiga
 #endif
