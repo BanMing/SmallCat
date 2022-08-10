@@ -1,3 +1,4 @@
+#include <iostream>
 #include <bx/allocator.h>
 
 #include "Input.h"
@@ -47,7 +48,7 @@ namespace Tiga
         }
 
         ///
-        bool inputGetKeyState(Key::Enum key, uint8_t *modifiers = NULL)
+        bool inputGetKeyState(Key::Enum key, uint8_t *modifiers /*= NULL*/)
         {
             return sInput->mKeyboard.GetKeyState(key, modifiers);
         }
