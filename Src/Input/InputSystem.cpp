@@ -1,4 +1,3 @@
-#include <iostream>
 #include <bx/allocator.h>
 
 #include "Input.h"
