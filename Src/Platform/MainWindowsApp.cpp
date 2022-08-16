@@ -11,16 +11,57 @@
 #include <bx/allocator.h>
 
 #include <Windows.h>
+#include <iostream>
+#include <string>
 
+#include "WindowHandle.h"
 #include "MainApp.h"
+#include "../Contanst/AppConst.h"
 #include "../Imgui/DearImgui.h"
 #include "../Input/MouseState.h"
 #include "../Input/InputSystem.h"
 
 namespace Tiga
 {
+#pragma region Struct
+    struct Msg
+    {
+        Msg()
+            : mX(0), mY(0), mWidth(0), mHeight(0), mFlags(0), mFlagsEnabled(false)
+        {
+        }
+
+        int32_t mX;
+        int32_t mY;
+        uint32_t mWidth;
+        uint32_t mHeight;
+        uint32_t mFlags;
+        std::string mTitle;
+        bool mFlagsEnabled;
+    };
+
+    enum
+    {
+        WM_USER_WINDOW_CREATE = WM_USER,
+        WM_USER_WINDOW_DESTROY,
+        WM_USER_WINDOW_SET_TITLE,
+        WM_USER_WINDOW_SET_FLAGS,
+        WM_USER_WINDOW_SET_POS,
+        WM_USER_WINDOW_SET_SIZE,
+        WM_USER_WINDOW_TOGGLE_FRAME,
+        WM_USER_WINDOW_MOUSE_LOCK,
+    };
+#pragma endregion Struct
+
+#pragma region Attributes
     Application *gApplication;
+    HWND gHwnd[CONFIG_MAX_WINDOWS];
     Input::MouseState gMouseState;
+    bx::Mutex gLock;
+    bx::HandleAllocT<CONFIG_MAX_WINDOWS> gWindowAlloc;
+    bool gIsAppInited;
+
+#pragma endregion Attributes
 
     LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -155,8 +196,14 @@ namespace Tiga
         return (int)msg.wParam;
     }
 
+#pragma region Events
     LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
     {
+        if (!gIsAppInited)
+        {
+            return DefWindowProc(hwnd, iMsg, wParam, lParam);
+        }
+
         switch (iMsg)
         {
         case WM_CLOSE:
@@ -181,6 +228,75 @@ namespace Tiga
 
         return DefWindowProc(hwnd, iMsg, wParam, lParam);
     }
+
+#pragma endregion Events
+
+#pragma region Events Handler
+#pragma endregion Events Handler
+
+#pragma region WindowHandle
+
+    WindowHandle CreateWindowHandle(int32_t x, int32_t y, uint32_t width, uint32_t height, uint32_t flags = WINDOW_FLAG_NONE, const char *title = "")
+    {
+        bx::MutexScope scope(gLock);
+        WindowHandle handle = {gWindowAlloc.alloc()};
+
+        if (UINT16_MAX != handle.idx)
+        {
+            Msg *msg = new Msg;
+            msg->mX = x;
+            msg->mY = y;
+            msg->mWidth = width;
+            msg->mHeight = height;
+            msg->mTitle = title;
+            PostMessage(gHwnd[kMainWindowIndex], WM_USER_WINDOW_CREATE, handle.idx, (LPARAM)msg);
+        }
+
+        return handle;
+    }
+
+    void DestroyWindow(WindowHandle handle)
+    {
+        if (UINT16_MAX != handle.idx)
+        {
+            PostMessage(gHwnd[kMainWindowIndex], WM_USER_WINDOW_DESTROY, handle.idx, 0);
+
+            bx::MutexScope scope(gLock);
+            gWindowAlloc.free(handle.idx);
+        }
+    }
+
+    void SetWindowPos(WindowHandle handle, int32_t x, int32_t y)
+    {
+        Msg *msg = new Msg;
+        msg->mX = x;
+        msg->mY = y;
+        PostMessage(gHwnd[kMainWindowIndex], WM_USER_WINDOW_SET_POS, handle.idx, (LPARAM)msg);
+    }
+
+    void SetWindowSize(WindowHandle handle, uint32_t width, uint32_t height)
+    {
+        PostMessage(gHwnd[kMainWindowIndex], WM_USER_WINDOW_SET_SIZE, handle.idx, (height << 16) || (width & 0xffff));
+    }
+
+    void SetWindowFlags(WindowHandle handle, uint32_t flags, bool enabled)
+    {
+        Msg *msg = new Msg;
+        msg->mFlags = flags;
+        msg->mFlagsEnabled = enabled;
+        PostMessage(gHwnd[kMainWindowIndex], WM_USER_WINDOW_SET_FLAGS, handle.idx, (LPARAM)msg);
+    }
+
+    void ToggleFullscreen(WindowHandle handle)
+    {
+        PostMessage(gHwnd[kMainWindowIndex], WM_USER_WINDOW_TOGGLE_FRAME, handle.idx, 0);
+    }
+    void SetMouseLock(WindowHandle handle, bool lock)
+    {
+        PostMessage(gHwnd[kMainWindowIndex], WM_USER_WINDOW_MOUSE_LOCK, handle.idx, lock);
+    }
+
+#pragma endregion WindowHandle
 } // namespace Tiga
 
 #endif
