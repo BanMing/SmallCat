@@ -13,6 +13,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "WindowHandle.h"
 #include "MainApp.h"
@@ -51,6 +52,15 @@ namespace Tiga
         WM_USER_WINDOW_TOGGLE_FRAME,
         WM_USER_WINDOW_MOUSE_LOCK,
     };
+
+    typedef std::vector<WCHAR> WSTRING;
+    inline WSTRING UTF8ToUTF16(const char *utf8_str)
+    {
+        int len = MultiByteToWideChar(CP_UTF8, 0, utf8_str, -1, NULL, 0);
+        WSTRING utf16(len);
+        MultiByteToWideChar(CP_UTF8, 0, utf8_str, -1, utf16.data(), len);
+        return utf16;
+    }
 #pragma endregion Struct
 
 #pragma region Attributes
@@ -206,6 +216,16 @@ namespace Tiga
 
         switch (iMsg)
         {
+        case WM_USER_WINDOW_CREATE:
+        {
+            Msg *msg = (Msg *)wParam;
+            HWND hwnd = CreateWindowW(L"Tiga", UTF8ToUTF16(msg->mTitle.c_str()).data(),
+                                      WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                                      msg->mX, msg->mY, msg->mWidth, msg->mHeight, NULL, NULL,
+                                      (HINSTANCE)GetModuleHandle(NULL), 0);
+                                      
+        }
+        break;
         case WM_CLOSE:
             if (gApplication != 0)
             {
