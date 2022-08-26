@@ -64,6 +64,7 @@ namespace Tiga
 #pragma endregion Struct
 
 
+
 #pragma region Attributes
     Application *gApplication;
     HWND gHwnd[CONFIG_MAX_WINDOWS];
