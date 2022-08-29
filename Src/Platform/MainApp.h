@@ -1,6 +1,7 @@
 #ifndef _MAIN_APP_H_
 #define _MAIN_APP_H_
 #include "../Samples/Application.h"
+#include <bgfx/platform.h>
 
 namespace Tiga
 {
