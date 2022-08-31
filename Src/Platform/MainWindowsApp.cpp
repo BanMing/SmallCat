@@ -18,6 +18,8 @@
 #include "../Events/CharEvent.h"
 #include "../Events/DropFileEvent.h"
 #include "../Contanst/AppConst.h"
+#include "../Imgui/DearImgui.h"
+
 namespace Tiga
 {
 #pragma region User Window Events
@@ -110,7 +112,7 @@ namespace Tiga
         {
         }
 
-        int32_t Run(int argc, const char *const *argv)
+        int32_t Run(Application *app, int argc, const char *const *argv)
         {
             SetDllDirectoryA(".");
 
@@ -148,14 +150,34 @@ namespace Tiga
             mOldWidth = kAppWidth;
             mOldHeight = kAppHeight;
 
+#pragma region bgfx initialize
             bgfx::renderFrame();
-            // TODO: app init
+            bgfx::Init init;
+            init.type = bgfx::RendererType::Direct3D12;
+            init.vendorId = 0;
+            init.resolution.width = mWidth;
+            init.resolution.height = mHeight;
+            init.resolution.reset = BGFX_RESET_VSYNC;
+            bgfx::init(init);
+
+            // Set view 0 clear state.
+            bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x303030ff, 1.0f, 0);
+
+            // // Enable debug text.
+            bgfx::setDebug(BGFX_DEBUG_TEXT);
+#pragma endregion bgfx initialize
+            // app init
+            app->Initialize();
+
+            // CreateGUI();
 
             mInit = true;
             mEventQueue.Post(SizeEvent::GetEvent(FindHandle(mHWND[kMainWindowIndex]), mWidth, mHeight));
 
             MSG msg;
             msg.message = WM_NULL;
+
+            DWORD lastTick = GetTickCount();
 
             while (!mExit)
             {
@@ -168,12 +190,32 @@ namespace Tiga
                     TranslateMessage(&msg);
                     DispatchMessageW(&msg);
                 }
+
+                DWORD thisTick = GetTickCount();
+                float deltaTime = float(thisTick - lastTick) * 0.001f;
+                app->Update(deltaTime);
+                lastTick = thisTick;
+
+                // Set view 0 default viewport.
+                bgfx::setViewRect(0, 0, 0, uint16_t(mWidth), uint16_t(mHeight));
+                app->Render(mAspectRatio);
+
+                // BeginGUIFrame(0, 0, 0, 0, mWidth, mHeight);
+                app->OnGUI();
+                // EndGUIFrame();
             }
+
+            ShutdownGUI();
+            app->Shutdown();
+
+            // Shutdown bgfx.
+            bgfx::shutdown();
 
             while (bgfx::RenderFrame::NoContext != bgfx::renderFrame())
             {
             };
 
+            delete app;
             DestroyWindow(mHWND[kMainWindowIndex]);
 
             return -1;
@@ -689,8 +731,8 @@ namespace Tiga
 #pragma endregion WindowHandle
     int32_t Run(Application *app, int argc, const char *const *argv)
     {
-        return sContext.Run(argc,argv);
+        return sContext.Run(app, argc, argv);
     }
 } // namespace Tiga
 
-#endif  
+#endif

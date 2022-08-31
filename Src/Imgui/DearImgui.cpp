@@ -13,10 +13,15 @@
 #include "vs_imgui_image.bin.h"
 #include "fs_imgui_image.bin.h"
 
+#include "roboto_regular.ttf.h"
+#include "robotomono_regular.ttf.h"
+#include "icons_kenney.ttf.h"
+#include "icons_font_awesome.ttf.h"
+
 static void *memAlloc(size_t _size, void *_userData);
 static void memFree(void *_ptr, void *_userData);
 
-static const bgfx::EmbeddedShader s_embeddedShaders[] =
+static const bgfx::EmbeddedShader sEmbeddedShaders[] =
     {
         BGFX_EMBEDDED_SHADER(vs_ocornut_imgui),
         BGFX_EMBEDDED_SHADER(fs_ocornut_imgui),
@@ -24,6 +29,19 @@ static const bgfx::EmbeddedShader s_embeddedShaders[] =
         BGFX_EMBEDDED_SHADER(fs_imgui_image),
 
         BGFX_EMBEDDED_SHADER_END()};
+
+struct FontRangeMerge
+{
+    const void *data;
+    size_t size;
+    ImWchar ranges[3];
+};
+
+static FontRangeMerge sFontRangeMerge[] =
+    {
+        {s_iconsKenneyTtf, sizeof(s_iconsKenneyTtf), {ICON_MIN_KI, ICON_MAX_KI, 0}},
+        {s_iconsFontAwesomeTtf, sizeof(s_iconsFontAwesomeTtf), {ICON_MIN_FA, ICON_MAX_FA, 0}},
+};
 
 struct DearImguiContext
 {
@@ -36,6 +54,8 @@ struct DearImguiContext
     bgfx::TextureHandle mTexture;
     bgfx::UniformHandle mSTex;
     bgfx::UniformHandle mUimageLodEnabled;
+
+    ImFont *mFont[ImGui::Font::Count];
 
     int32_t mLastScroll;
     int64_t mLastTime;
@@ -57,6 +77,8 @@ static void memFree(void *_ptr, void *_userData)
 
 void CreateGUI()
 {
+    sContext.mViewId = 255;
+    // sContext.mLastScroll
     static bx::DefaultAllocator allocator;
     sContext.mAllocator = &allocator;
     ImGui::SetAllocatorFunctions(memAlloc, memFree, NULL);
@@ -65,16 +87,28 @@ void CreateGUI()
 
     ImGuiIO &io = ImGui::GetIO();
 
-    ImGui::StyleColorsLight();
+    io.DisplaySize = ImVec2(1280.0f, 720.0f);
+    io.DeltaTime = 1.0f / 60.0f;
+    io.IniFilename = NULL;
+    // Doug Binks' darl color scheme
+    // https://gist.github.com/dougbinks/8089b4bbaccaaf6fa204236978d165a9
+    ImGuiStyle &style = ImGui::GetStyle();
+
+    ImGui::StyleColorsDark(&style);
+
+    style.FrameRounding = 4.0f;
+    style.WindowBorderSize = 0.0f;
+    
+    io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
 
     bgfx::RendererType::Enum type = bgfx::getRendererType();
-    sContext.mProgram = bgfx::createProgram(bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_ocornut_imgui"),
-                                            bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_ocornut_imgui"),
+    sContext.mProgram = bgfx::createProgram(bgfx::createEmbeddedShader(sEmbeddedShaders, type, "vs_ocornut_imgui"),
+                                            bgfx::createEmbeddedShader(sEmbeddedShaders, type, "fs_ocornut_imgui"),
                                             true);
 
     sContext.mUimageLodEnabled = bgfx::createUniform("u_imageLodEnabled", bgfx::UniformType::Vec4);
-    sContext.mImageProgram = bgfx::createProgram(bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_imgui_image"),
-                                                 bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_imgui_image"), true);
+    sContext.mImageProgram = bgfx::createProgram(bgfx::createEmbeddedShader(sEmbeddedShaders, type, "vs_imgui_image"),
+                                                 bgfx::createEmbeddedShader(sEmbeddedShaders, type, "fs_imgui_image"), true);
     sContext.mLayout.begin()
         .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
         .add(bgfx::Attrib::TexCoord0, 2, bgfx::AttribType::Float)
@@ -86,6 +120,25 @@ void CreateGUI()
     // (In the examples/ app this is usually done within the ImGui_ImplXXX_Init() function from one of the demo Renderer)
     uint8_t *data;
     int32_t width, height;
+    {
+        ImFontConfig config;
+        config.FontDataOwnedByAtlas = false;
+        config.MergeMode = false;
+
+        const ImWchar *ranges = io.Fonts->GetGlyphRangesCyrillic();
+        sContext.mFont[ImGui::Font::Regular] = io.Fonts->AddFontFromMemoryTTF((void *)s_robotoRegularTtf, sizeof(s_robotoRegularTtf), 18.0f, &config, ranges);
+        sContext.mFont[ImGui::Font::Mono] = io.Fonts->AddFontFromMemoryTTF((void *)s_robotoMonoRegularTtf, sizeof(s_robotoMonoRegularTtf), 15.0f, &config, ranges);
+
+        config.MergeMode = true;
+        config.DstFont = sContext.mFont[ImGui::Font::Regular];
+
+        for (uint32_t ii = 0; ii < BX_COUNTOF(sFontRangeMerge); ++ii)
+        {
+            const FontRangeMerge &frm = sFontRangeMerge[ii];
+
+            io.Fonts->AddFontFromMemoryTTF((void *)frm.data, (int)frm.size, 15.0f, &config, frm.ranges);
+        }
+    }
     io.Fonts->GetTexDataAsRGBA32(&data, &width, &height);
 
     sContext.mTexture = bgfx::createTexture2D(
@@ -257,13 +310,13 @@ namespace ImGui
 {
     void PushFont(Font::Enum _font)
     {
-        // PushFont(s_ctx.m_font[_font]);
+        PushFont(sContext.mFont[_font]);
     }
 
     void PushEnabled(bool _enabled)
     {
         extern void PushItemFlag(int option, bool enabled);
-        // PushItemFlag(ImGuiItemFlags_Disabled, !_enabled);
+        PushItemFlag(ImGuiItemFlags_Disabled, !_enabled);
         PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * (_enabled ? 1.0f : 0.5f));
     }
 

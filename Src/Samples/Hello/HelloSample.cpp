@@ -7,8 +7,6 @@ namespace Tiga
     void HelloSample::Initialize()
     {
         std::cout << "Hello, Initialize!\n";
-        // Enable debug text.
-        bgfx::setDebug(BGFX_DEBUG_TEXT);
     }
 
     void HelloSample::Update(float deltaTime)

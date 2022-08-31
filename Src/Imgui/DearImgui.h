@@ -1,6 +1,8 @@
 #ifndef _DEAR_IMGUI_H_
 #define _DEAR_IMGUI_H_
 #include <dear-imgui/imgui.h>
+#include <iconfontheaders/icons_kenney.h>
+#include <iconfontheaders/icons_font_awesome.h>
 
 #define IMGUI_MBUT_LEFT   0x01
 #define IMGUI_MBUT_RIGHT  0x02
