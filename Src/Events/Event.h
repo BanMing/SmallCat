@@ -2,6 +2,7 @@
 #define _EVENT_H_
 
 #include "../Platform/WindowHandle.h"
+#include "../Utils/BgfxUtils.h"
 
 namespace Tiga
 {
@@ -26,6 +27,12 @@ namespace Tiga
 
         Event(Enum type) : mType(type) { mHandle.idx = UINT16_MAX; }
         Event(Enum type, WindowHandle handle) : mType(type), mHandle(handle) {}
+
+        static Event *GetEvent(Enum type)
+        {
+            Event *ev = BX_NEW(GetAllocator(), Event)(type);
+            return ev;
+        }
     };
 
 } // namespace Tiga

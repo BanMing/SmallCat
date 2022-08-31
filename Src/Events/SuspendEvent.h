@@ -1,7 +1,6 @@
 #ifndef _SUSPENDEVENT_H_
 #define _SUSPENDEVENT_H_
 #include "Event.h"
-#include "../Utils/BgfxUtils.h"
 #include "../Enums/Suspend.h"
 
 namespace Tiga

@@ -2,7 +2,6 @@
 #define _KEYEVENT_H_
 #include "Event.h"
 #include "../Input/Key.h"
-#include "../Utils/BgfxUtils.h"
 
 namespace Tiga
 {

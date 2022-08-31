@@ -1,7 +1,6 @@
 #ifndef _WINDOWEVENT_H_
 #define _WINDOWEVENT_H_
 #include "Event.h"
-#include "../Utils/BgfxUtils.h"
 
 namespace Tiga
 {

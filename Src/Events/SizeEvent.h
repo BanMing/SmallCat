@@ -1,7 +1,6 @@
 #ifndef _SIZEEVENT_H_
 #define _SIZEEVENT_H_
 #include "Event.h"
-#include "../Utils/BgfxUtils.h"
 
 namespace Tiga
 {

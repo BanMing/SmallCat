@@ -18,6 +18,7 @@ namespace Tiga
     void DestroyWindow(WindowHandle handle);
     void SetWindowPos(WindowHandle handle, int32_t x, int32_t y);
     void SetWindowSize(WindowHandle handle, uint32_t width, uint32_t height);
+    void SetWindowTitle(WindowHandle handle, const char* title);
     void SetWindowFlags(WindowHandle handle, uint32_t flags, bool enabled);
     void ToggleFullscreen(WindowHandle handle);
     void SetMouseLock(WindowHandle handle, bool lock);

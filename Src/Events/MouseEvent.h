@@ -2,7 +2,6 @@
 #define _MOUSEEVENT_H_
 #include "Event.h"
 #include "../Input/MouseButton.h"
-#include "../Utils/BgfxUtils.h"
 
 namespace Tiga
 {
@@ -26,6 +25,18 @@ namespace Tiga
             ev->mButton = button;
             ev->mIsMove = false;
             ev->mIsDown = isDown;
+            return ev;
+        }
+
+        static MouseEvent *GetEvent(WindowHandle handle, int32_t mouseX, int32_t mouseY, int32_t mouseZ)
+        {
+            MouseEvent *ev = BX_NEW(GetAllocator(), MouseEvent)(handle);
+            ev->mMouseX = mouseX;
+            ev->mMouseY = mouseY;
+            ev->mMouseZ = mouseZ;
+            ev->mButton = Input::MouseButton::None;
+            ev->mIsMove = false;
+            ev->mIsDown = false;
             return ev;
         }
     };

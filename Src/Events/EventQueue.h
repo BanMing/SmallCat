@@ -3,7 +3,6 @@
 #include <bx/spscqueue.h>
 
 #include "Event.h"
-#include "../Utils/BgfxUtils.h"
 namespace Tiga
 {
     class EventQueue

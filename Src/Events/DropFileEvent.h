@@ -12,7 +12,7 @@ namespace Tiga
 
         DropFileEvent(WindowHandle handle) : Event(Event::DropFile, handle) {}
 
-        static DropFileEvent *GetEvent(WindowHandle handle, bx::FilePath &filePath)
+        static DropFileEvent *GetEvent(WindowHandle handle, const bx::FilePath &filePath)
         {
             DropFileEvent *ev = BX_NEW(GetAllocator(), DropFileEvent)(handle);
             ev->mFilePath = filePath;
