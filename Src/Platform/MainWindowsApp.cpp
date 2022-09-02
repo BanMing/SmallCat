@@ -169,7 +169,7 @@ namespace Tiga
             // app init
             app->Initialize();
 
-            // CreateGUI();
+            imguiCreate();
 
             mInit = true;
             mEventQueue.Post(SizeEvent::GetEvent(FindHandle(mHWND[kMainWindowIndex]), mWidth, mHeight));
@@ -205,7 +205,7 @@ namespace Tiga
                 // EndGUIFrame();
             }
 
-            ShutdownGUI();
+            imguiDestroy();
             app->Shutdown();
 
             // Shutdown bgfx.
