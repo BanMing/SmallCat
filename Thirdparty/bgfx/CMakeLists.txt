@@ -26,7 +26,7 @@ if (MSVC AND (MSVC_VERSION GREATER_EQUAL 1914))
 endif()
 
 option( BGFX_BUILD_TOOLS                "Build bgfx tools."                             ON  )
-option( BGFX_BUILD_EXAMPLES             "Build bgfx examples."                          ON  )
+option( BGFX_BUILD_EXAMPLES             "Build bgfx examples."                          OFF  )
 option( BGFX_INSTALL                    "Create installation target."                   ON  )
 option( BGFX_INSTALL_EXAMPLES           "Install examples and their runtimes."          OFF )
 option( BGFX_CUSTOM_TARGETS             "Include convenience custom targets."           ON  )
