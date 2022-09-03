@@ -38,4 +38,4 @@ add_subdirectory_ex(Thirdparty)
 set_project_custom_defines()
 
 
-target_link_libraries( Tiga PUBLIC bgfx bx bimg dear-imgui)
+target_link_libraries( Tiga PUBLIC bgfx bx bimg example-common)
