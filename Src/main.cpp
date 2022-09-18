@@ -109,4 +109,3 @@ int _main_(int _argc, char **_argv)
     delete app;
     return true;
 }
-// ENTRY_IMPLEMENT_MAIN(HelloWorld, "Hello World", "Initialization and debug text.", "https://bkaradzic.github.io/bgfx/examples.html#helloworld");
