@@ -9,3 +9,7 @@ add_executable(GameAnimation main.cpp)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
+
+add_subdirectory(bgfx.cmake)
+
+target_link_libraries(GameAnimation PUBLIC bx bimg bgfx example-common)
