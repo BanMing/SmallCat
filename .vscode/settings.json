@@ -3,6 +3,7 @@
         "*.cfg": "coffeescript",
         "__availability": "cpp",
         "__hash_table": "cpp",
-        "*.idl": "cpp"
+        "*.idl": "cpp",
+        "deque": "cpp"
     }
 }

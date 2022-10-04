@@ -6,8 +6,8 @@
 class HelloWorld : public Application
 {
 public:
-    HelloWorld(const char *_name, const char *_description, const char *_url)
-        : Application(_name, _description, _url)
+    HelloWorld(const char *_name, const char *_description)
+        : Application(_name, _description)
     {
     }
 

@@ -16,8 +16,8 @@ protected:
     uint32_t m_reset;
 
 public:
-    Application(const char *_name, const char *_description, const char *_url)
-        : entry::AppI(_name, _description, _url)
+    Application(const char *_name, const char *_description)
+        : entry::AppI(_name, _description, "")
     {
     }
     void init(int32_t _argc, const char *const *_argv, uint32_t _width, uint32_t _height) override;
@@ -26,10 +26,10 @@ public:
     bool update() override;
 
 protected:
-    virtual void onInit() = 0;
-    virtual int onShutdown() = 0;
-    virtual void onUpdate(float _deltaTime) = 0;
-    virtual void onRender(float _inAspectRatio) = 0;
-    virtual void onGui() = 0;
+    inline virtual void onInit() {}
+    inline virtual void onShutdown() {}
+    inline virtual void onUpdate(float _deltaTime) {}
+    inline virtual void onRender(float _inAspectRatio) {}
+    inline virtual void onGui() {}
 };
 #endif //_APP_H_
