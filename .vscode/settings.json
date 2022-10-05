@@ -4,6 +4,13 @@
         "__availability": "cpp",
         "__hash_table": "cpp",
         "*.idl": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "__locale": "cpp",
+        "bitset": "cpp",
+        "ios": "cpp",
+        "istream": "cpp",
+        "locale": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp"
     }
 }

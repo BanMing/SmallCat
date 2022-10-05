@@ -5,8 +5,9 @@ include(CTest)
 enable_testing()
 
 file(GLOB_RECURSE ExampleSrc examples/*.h examples/*.cpp)
+file(GLOB_RECURSE MathSrc math/*.h math/*.cpp)
 
-add_executable(GameAnimation main.cpp ${ExampleSrc})
+add_executable(GameAnimation main.cpp ${ExampleSrc} ${MathSrc})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
