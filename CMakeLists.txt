@@ -1,17 +1,15 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(GameAnimation VERSION 0.1.0)
+# Enable C++11
+set(CMAKE_CXX_STANDARD 11)
 
-include(CTest)
-enable_testing()
+project(GameAnimation VERSION 0.1.0)
 
 file(GLOB_RECURSE ExampleSrc examples/*.h examples/*.cpp)
 file(GLOB_RECURSE MathSrc math/*.h math/*.cpp)
 
-add_executable(GameAnimation main.cpp ${ExampleSrc} ${MathSrc})
+include(test/CMakeLists.txt)
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+add_executable(GameAnimation main.cpp ${ExampleSrc} ${MathSrc})
 
 add_subdirectory(bgfx.cmake)
 

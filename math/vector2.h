@@ -14,9 +14,9 @@ struct TVector2
         };
     };
 
-    inline Vector2() : x(T(0)), y(T(0)) {}
-    inline Vector2(T _x, T _y) : x(_x), y(_y) {}
-    inline Vector2(T *_fv) : x(_fv[0]), y(_fv[1]) {}
+    Vector2() : x(T(0)), y(T(0)) {}
+    Vector2(T _x, T _y) : x(_x), y(_y) {}
+    Vector2(T *_fv) : x(_fv[0]), y(_fv[1]) {}
 };
 
 typedef TVector2<float> Vector2;

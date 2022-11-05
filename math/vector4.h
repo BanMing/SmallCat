@@ -14,9 +14,9 @@ struct TVector4
         };
     };
 
-    inline TVector4() : x(T(0)), y(T(0)), z(T(0)), w(T(0)) {}
-    inline TVector4(T _x, T _y, T _z, T _w) : x(_x), y(_y), z(_z), w(_w) {}
-    inline TVector4(T *_fv) : x(_fv[0]), y(_fv[1]), z(_fv[2]), w(_fv[3]) {}
+    TVector4() : x(T(0)), y(T(0)), z(T(0)), w(T(0)) {}
+    TVector4(T _x, T _y, T _z, T _w) : x(_x), y(_y), z(_z), w(_w) {}
+    TVector4(T *_fv) : x(_fv[0]), y(_fv[1]), z(_fv[2]), w(_fv[3]) {}
 };
 
 typedef TVector4<float> Vector4;
