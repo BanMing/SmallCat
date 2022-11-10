@@ -9,7 +9,7 @@ float lenSq(const Vector3 &_v)
 
 float len(const Vector3 &_v)
 {
-    return sqrtf(_v.x * _v.x + _v.y * _v.y + _v.z * _v.z);
+    return sqrt(_v.x * _v.x + _v.y * _v.y + _v.z * _v.z);
 }
 
 void normalize(Vector3 &_v)
@@ -20,7 +20,7 @@ void normalize(Vector3 &_v)
         return;
     }
 
-    float invLen = 1.0f / sqrtf(lenSq);
+    float invLen = 1.0f / sqrt(lenSq);
     _v.x *= invLen;
     _v.y *= invLen;
     _v.z *= invLen;
@@ -34,7 +34,7 @@ Vector3 normalized(const Vector3 &_v)
         return _v;
     }
 
-    float invLen = 1.0f / sqrtf(lenSq);
+    float invLen = 1.0f / sqrt(lenSq);
     return Vector3(_v.x * invLen,
                    _v.y * invLen,
                    _v.z * invLen);
@@ -77,7 +77,7 @@ float angle(const Vector3 &_l, const Vector3 &_r)
     }
 
     float dot = _l.x * _r.x + _l.y * _r.y + _l.z * _r.z;
-    float len = sqrtf(lenSqL) * sqrtf(lenSqR);
+    float len = sqrt(lenSqL) * sqrt(lenSqR);
     return acosf(dot / len);
 }
 
