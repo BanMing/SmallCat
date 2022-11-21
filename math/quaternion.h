@@ -30,10 +30,22 @@ Quaternion operator+(const Quaternion &_a, const Quaternion &_b);
 Quaternion operator-(const Quaternion &_a, const Quaternion &_b);
 Quaternion operator-(const Quaternion &_q);
 Quaternion operator*(const Quaternion &_q, float _s);
+Vector3 operator*(const Quaternion &_q, const Vector3 &_v);
 Quaternion operator*(const Quaternion &_a, const Quaternion &_b);
 
+bool operator==(const Quaternion &_a, const Quaternion &_b);
+bool operator!=(const Quaternion &_a, const Quaternion &_b);
+
+float dot(const Quaternion &_a, const Quaternion &_b);
+Quaternion conjugate(const Quaternion &_q);
+Quaternion inverse(const Quaternion &_q);
+
 Quaternion angleAxis(float _angle, const Vector3 &_axis);
-Quaternion fromToRotation(const Vector3 &_from, const Vector3 &_to);
+Vector3 getAxis(const Quaternion& _q);
+float getAngle(const Quaternion& _q);
+
+Quaternion fromVectors(const Vector3 &_from, const Vector3 &_to);
+Quaternion fromUnitVectors(const Vector3 &_from, const Vector3 &_to);
 
 /// @brief (0, 0, 0, 1)
 static const Quaternion kIdentity;
