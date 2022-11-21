@@ -1,10 +1,16 @@
 #include <iostream>
 #include "../math/matrix4.h"
 #include "../math/vector3.h"
-// App entry
-int main(int, char **)
+#include "../math/quaternion.h"
+
+void VectorTest()
 {
-    std::cout << "Hello, world!\n";
+    Vector3 test(1, 2, 3);
+}
+
+void matrixTest()
+{
+
     Matrix4 x(2, 0, 0, 0,
               0, 3, 0, 0,
               0, 2, 3, 0,
@@ -31,5 +37,18 @@ int main(int, char **)
         x.xz, x.yz, x.zz, x.tz,
         x.xw, x.yw, x.zw, x.tw);
     Matrix4 inver = inverse(t);
+}
+
+void quaternionTest()
+{
+    Quaternion q(1, 2, 3, 4);
+}
+
+int main(int, char **)
+{
+    std::cout << "Hello, world!\n";
+    VectorTest();
+    matrixTest();
+    quaternionTest();
     return 0;
 }

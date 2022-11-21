@@ -30,6 +30,8 @@ struct Matrix4
             float tw;
         };
     };
+    
+    static const Matrix4 Identity;
 
     Matrix4() : xx(1), xy(0), xz(0), xw(0),
                 yx(0), yy(1), yz(0), yw(0),
@@ -64,6 +66,4 @@ Matrix4 transposed(const Matrix4 &_m);
 float determinant(const Matrix4 &_m);
 Matrix4 adjugate(const Matrix4 &_m);
 Matrix4 inverse(const Matrix4 &m);
-
-static const Matrix4 kIdentity();
 #endif //_MATRIX4_H_

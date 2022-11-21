@@ -33,7 +33,7 @@ Quaternion normalized(const Quaternion &_q)
     float lenSq = _q.x * _q.x + _q.y * _q.y + _q.z * _q.z + _q.w * _q.w;
     if (lenSq < kFloatEpsilon)
     {
-        return;
+        return Quaternion();
     }
 
     float invLen = 1.0f / sqrt(lenSq);

@@ -1,6 +1,8 @@
 #ifndef _VECTOR3_H_
 #define _VECTOR3_H_
 
+#include <bx/math.h>
+
 struct Vector3
 {
     union
@@ -11,6 +13,8 @@ struct Vector3
         {
             float x, y, z;
         };
+
+        bx::Vec3 bxVector3;
     };
 
     Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
