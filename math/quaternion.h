@@ -1,6 +1,7 @@
 #ifndef _QUATERNION_H_
 #define _QUATERNION_H_
 #include "vector3.h"
+#include "matrix4.h"
 #include <bx/math.h>
 
 struct Quaternion
@@ -52,4 +53,7 @@ float getAngle(const Quaternion &_q);
 
 Quaternion fromVectors(const Vector3 &_from, const Vector3 &_to);
 Quaternion fromUnitVectors(const Vector3 &_from, const Vector3 &_to);
+
+Matrix4 quatToMat4(const Quaternion &_q);
+Quaternion mat4ToQuat(const Matrix4 &_m);
 #endif //_QUATERNION_H_

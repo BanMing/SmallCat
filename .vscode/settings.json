@@ -11,6 +11,8 @@
         "istream": "cpp",
         "locale": "cpp",
         "ostream": "cpp",
-        "streambuf": "cpp"
+        "streambuf": "cpp",
+        "__node_handle": "cpp",
+        "regex": "cpp"
     }
 }

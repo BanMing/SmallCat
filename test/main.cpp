@@ -2,6 +2,7 @@
 #include "../math/matrix4.h"
 #include "../math/vector3.h"
 #include "../math/quaternion.h"
+#include "../math/transform.h"
 
 void VectorTest()
 {
@@ -44,11 +45,51 @@ void quaternionTest()
     Quaternion q(1, 2, 3, 4);
 }
 
+void transformTest()
+{
+    Vector3 scale(1.0f, 2.0f, 3.0f);
+    Vector3 position(-10.8f, 0.0f, 5.3f);
+    Quaternion rotation(0.2f, 0.2f, 0.0f, 1.0f);
+
+    // First, extract the rotation basis of the transform
+    Vector3 x = rotation * Vector3(1, 0, 0);
+    Vector3 y = rotation * Vector3(0, 1, 0);
+    Vector3 z = rotation * Vector3(0, 0, 1);
+
+    // Next, scale the basis vectors
+    x = x * scale.x;
+    y = y * scale.y;
+    z = z * scale.z;
+
+    // Extract the position of the transform
+    Vector3 p = position;
+
+    // Create matrix
+    Matrix4 oldMat4 = Matrix4(
+        x.x, x.y, x.z, 0,  // X basis (& Scale)
+        y.x, y.y, y.z, 0,  // Y basis (& scale)
+        z.x, z.y, z.z, 0,  // Z basis (& scale)
+        p.x, p.y, p.z, 1); // Position
+
+    Transform trans(position, rotation, scale);
+
+    // 0.88256	0.16318	-0.44097	11.81148
+    // 0.00901	0.46271	0.18926	-0.89663
+    // 0.15662	-0.11401	0.27127	0.26104
+    // 0.00000	0.00000	0.00000	1.00000
+
+//     0.88256	0.03606	1.40954	-10.76000
+// 0.16318	1.85083	-1.02606	0.00000
+// -0.44097	0.75704	2.44139	5.25000
+// 0.00000	0.00000	0.00000	1.00000
+    Matrix4 transMat4 = transformToMat4(trans);
+}
 int main(int, char **)
 {
     std::cout << "Hello, world!\n";
     VectorTest();
     matrixTest();
     quaternionTest();
+    transformTest();
     return 0;
 }

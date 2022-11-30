@@ -208,3 +208,79 @@ Quaternion fromUnitVectors(const Vector3 &_from, const Vector3 &_to)
         return normalized(Quaternion(w.x, w.y, w.z, 1 + d));
     }
 }
+
+Matrix4 quatToMat4(const Quaternion &_q)
+{
+    float x2 = _q.x + _q.x;
+    float y2 = _q.y + _q.y;
+    float z2 = _q.z + _q.z;
+
+    float xx2 = _q.x * x2;
+    float yy2 = _q.y * y2;
+    float zz2 = _q.z * z2;
+    float xy2 = _q.x * y2;
+    float xz2 = _q.x * z2;
+    float yz2 = _q.y * z2;
+    float wx2 = _q.w * x2;
+    float wy2 = _q.w * y2;
+    float wz2 = _q.w * z2;
+
+    return Matrix4(1.0f - yy2 - zz2, xy2 + wz2, xz2 - wy2, 0.0f,
+                   xy2 - wz2, 1.0f - xx2 - zz2, yz2 + wx2, 0.0f,
+                   xz2 + wy2, yz2 - wx2, 1.0f - xx2 - yy2, 0.0f,
+                   0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+Quaternion mat4ToQuat(const Matrix4 &_m)
+{
+    float trace = _m.cloumn[0].v[0] + _m.cloumn[1].v[1] + _m.cloumn[2].v[2];
+    if (trace >= kFloatEpsilon)
+    {
+        float s = sqrt(trace + 1.0f);
+        float is = 0.5f / s;
+        return Quaternion((_m.cloumn[1].v[2] - _m.cloumn[2].v[1]) * is,
+                          (_m.cloumn[2].v[0] - _m.cloumn[0].v[2]) * is,
+                          (_m.cloumn[0].v[1] - _m.cloumn[1].v[0]) * is,
+                          0.5f * s);
+    }
+    else
+    {
+        int i = 0;
+        if (_m.cloumn[1].v[1] > _m.cloumn[0].v[0])
+        {
+            i = 1;
+        }
+        if (_m.cloumn[2].v[2] > _m.cloumn[i].v[i])
+        {
+            i = 2;
+        }
+
+        if (i == 0)
+        {
+            float s = sqrt(_m.cloumn[0].v[0] - (_m.cloumn[1].v[1] + _m.cloumn[2].v[2]) + 1);
+            float is = 0.5f / s;
+            return Quaternion(0.5f * s,
+                        (_m.cloumn[1].v[0] + _m.cloumn[0].v[1]) * is,
+                        (_m.cloumn[0].v[2] + _m.cloumn[2].v[0]) * is,
+                        (_m.cloumn[1].v[2] - _m.cloumn[2].v[1]) * is);
+        }
+        else if (i == 1)
+        {
+            float s = sqrt(_m.cloumn[1].v[1] - (_m.cloumn[2].v[2] + _m.cloumn[0].v[0]) + 1);
+            float is = 0.5f / s;
+            return Quaternion((_m.cloumn[1].v[0] + _m.cloumn[0].v[1]) * is,
+                        0.5f * s,
+                        (_m.cloumn[2].v[1] + _m.cloumn[1].v[2]) * is,
+                        (_m.cloumn[2].v[0] - _m.cloumn[0].v[2]) * is);
+        }
+        else
+        {
+            float s = sqrt(_m.cloumn[2].v[2] - (_m.cloumn[0].v[0] + _m.cloumn[1].v[1]) + 1);
+            float is = 0.5f / s;
+            return Quaternion((_m.cloumn[0].v[2] + _m.cloumn[2].v[0]) * is,
+                        (_m.cloumn[2].v[1] + _m.cloumn[1].v[2]) * is,
+                        0.5f * s,
+                        (_m.cloumn[0].v[1] - _m.cloumn[1].v[0]) * is);
+        }
+    }
+}
