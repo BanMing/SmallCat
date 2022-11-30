@@ -47,6 +47,7 @@ void quaternionTest()
 
 void transformTest()
 {
+    // https://www.andre-gaschler.com/rotationconverter/
     Vector3 scale(1.0f, 2.0f, 3.0f);
     Vector3 position(-10.8f, 0.0f, 5.3f);
     Quaternion rotation(0.2f, 0.2f, 0.0f, 1.0f);
@@ -72,16 +73,7 @@ void transformTest()
         p.x, p.y, p.z, 1); // Position
 
     Transform trans(position, rotation, scale);
-
-    // 0.88256	0.16318	-0.44097	11.81148
-    // 0.00901	0.46271	0.18926	-0.89663
-    // 0.15662	-0.11401	0.27127	0.26104
-    // 0.00000	0.00000	0.00000	1.00000
-
-//     0.88256	0.03606	1.40954	-10.76000
-// 0.16318	1.85083	-1.02606	0.00000
-// -0.44097	0.75704	2.44139	5.25000
-// 0.00000	0.00000	0.00000	1.00000
+    
     Matrix4 transMat4 = transformToMat4(trans);
 }
 int main(int, char **)
