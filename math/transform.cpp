@@ -1,61 +1,43 @@
 #include "transform.h"
+#include <cmath>
 
 Matrix4 transformToMat4(const Transform &_trans)
 {
-    // M = SRT
-
-    // Matrix4 rotationMat4 = quatToMat4(_trans.rotation);
-
-    // Matrix4 scaleMat4(_trans.scale.x, 0, 0, 0,
-    //                   0, _trans.scale.y, 0, 0,
-    //                   0, 0, _trans.scale.z, 0,
-    //                   0, 0, 0, 1);
-
-    // Matrix4 translateMat4(1, 0, 0, 0,
-    //                       0, 1, 0, 0,
-    //                       0, 0, 1, 0,
-    //                       _trans.position.x, _trans.position.y, _trans.position.z, 1);
-
-    // res = translateMat4 * rotationMat4 * scaleMat4;
-
-    const float x = _trans.rotation.x;
-    const float y = _trans.rotation.y;
-    const float z = _trans.rotation.z;
-    const float w = _trans.rotation.w;
-    const float x2 = x + x;
-    const float y2 = y + y;
-    const float z2 = z + z;
-
-    const float xx = x * x2;
-    const float xy = x * y2;
-    const float xz = x * z2;
-    const float yy = y * y2;
-    const float yz = y * z2;
-    const float zz = z * z2;
-    const float wx = w * x2;
-    const float wy = w * y2;
-    const float wz = w * z2;
-    
-    const float sx = _trans.scale.x;
-    const float sy = _trans.scale.y;
-    const float sz = _trans.scale.z;
-
+    Matrix4 rotationMat4 = quatToMat4(_trans.rotation);
     Matrix4 res;
-    res.m[0] = (1 - (yy + zz)) * sx;
-    res.m[1] = (xy + wz) * sx;
-    res.m[2] = (xz - wy) * sx;
+
+    res.m[0] = rotationMat4.m[0] * _trans.scale.x;
+    res.m[1] = rotationMat4.m[1] * _trans.scale.x;
+    res.m[2] = rotationMat4.m[2] * _trans.scale.x;
     res.m[3] = 0;
-    res.m[4] = (xy - wz) * sy;
-    res.m[5] = (1 - (xx + zz)) * sy;
-    res.m[6] = (yz + wx) * sy;
+
+    res.m[4] = rotationMat4.m[4] * _trans.scale.y;
+    res.m[5] = rotationMat4.m[5] * _trans.scale.y;
+    res.m[6] = rotationMat4.m[6] * _trans.scale.y;
     res.m[7] = 0;
-    res.m[8] = (xz + wy) * sz;
-    res.m[9] = (yz - wx) * sz;
-    res.m[10] = (1 - (xx + yy)) * sz;
+
+    res.m[8] = rotationMat4.m[8] * _trans.scale.z;
+    res.m[9] = rotationMat4.m[9] * _trans.scale.z;
+    res.m[10] = rotationMat4.m[10] * _trans.scale.z;
     res.m[11] = 0;
+
     res.m[12] = _trans.position.x;
     res.m[13] = _trans.position.y;
     res.m[14] = _trans.position.z;
     res.m[15] = 1;
+
+    return res;
+}
+
+Transform mat4ToTransform(const Matrix4 &_m)
+{
+    Transform res;
+    res.position = Vector3(_m.m[12], _m.m[13], _m.m[14]);
+    res.rotation = mat4ToQuat(_m);
+
+    res.scale.x = sqrt(_m.m[0] * _m.m[0] + _m.m[1] * _m.m[1] + _m.m[2] * _m.m[2]);
+    res.scale.y = sqrt(_m.m[4] * _m.m[4] + _m.m[5] * _m.m[5] + _m.m[6] * _m.m[6]);
+    res.scale.z = sqrt(_m.m[8] * _m.m[8] + _m.m[9] * _m.m[9] + _m.m[10] * _m.m[10]);
+
     return res;
 }

@@ -15,5 +15,5 @@ struct Transform
 };
 
 Matrix4 transformToMat4(const Transform &_trans);
-
+Transform mat4ToTransform(const Matrix4& _m);
 #endif //_TRANSFORM_H_
