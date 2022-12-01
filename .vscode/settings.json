@@ -13,6 +13,7 @@
         "ostream": "cpp",
         "streambuf": "cpp",
         "__node_handle": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "vector": "cpp"
     }
 }

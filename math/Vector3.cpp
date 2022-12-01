@@ -42,12 +42,12 @@ Vector3 normalized(const Vector3 &_v)
 
 Vector3 operator+(const Vector3 &_l, const Vector3 &_r)
 {
-    return Vector3(_l.x + _r.x, _l.y + _r.y, _l.y + _r.y);
+    return Vector3(_l.x + _r.x, _l.y + _r.y, _l.z + _r.z);
 }
 
 Vector3 operator-(const Vector3 &_l, const Vector3 &_r)
 {
-    return Vector3(_l.x - _r.x, _l.y - _r.y, _l.y - _r.y);
+    return Vector3(_l.x - _r.x, _l.y - _r.y, _l.z - _r.z);
 }
 
 Vector3 operator*(const Vector3 &_v, float _scaler)

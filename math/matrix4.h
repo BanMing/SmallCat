@@ -30,7 +30,7 @@ struct Matrix4
             float tw;
         };
     };
-    
+
     static const Matrix4 Identity;
 
     Matrix4() : xx(1), xy(0), xz(0), xw(0),

@@ -68,11 +68,7 @@ Vector3 operator*(const Quaternion &_q, const Vector3 &_v)
     // V' = V + w(2(Q x V)) + (Q x (2(Q x V)))
     // T = 2(Q x V);
     // V' = V + w*(T) + (Q x T)
-    // const FVector Q(X, Y, Z);
-    // T-> const FVector T = 2.f * FVector::CrossProduct(Q, V);
-    // const FVector Result = V + (W * T) + FVector::CrossProduct(Q, T);
 
-    // return Result;
     Vector3 q(_q.x, _q.y, _q.z);
     Vector3 t = cross(q, _v) * 2.0f;
     return _v + (t * _q.w) + cross(q, t);
@@ -260,27 +256,27 @@ Quaternion mat4ToQuat(const Matrix4 &_m)
             float s = sqrt(_m.cloumn[0].v[0] - (_m.cloumn[1].v[1] + _m.cloumn[2].v[2]) + 1);
             float is = 0.5f / s;
             return Quaternion(0.5f * s,
-                        (_m.cloumn[1].v[0] + _m.cloumn[0].v[1]) * is,
-                        (_m.cloumn[0].v[2] + _m.cloumn[2].v[0]) * is,
-                        (_m.cloumn[1].v[2] - _m.cloumn[2].v[1]) * is);
+                              (_m.cloumn[1].v[0] + _m.cloumn[0].v[1]) * is,
+                              (_m.cloumn[0].v[2] + _m.cloumn[2].v[0]) * is,
+                              (_m.cloumn[1].v[2] - _m.cloumn[2].v[1]) * is);
         }
         else if (i == 1)
         {
             float s = sqrt(_m.cloumn[1].v[1] - (_m.cloumn[2].v[2] + _m.cloumn[0].v[0]) + 1);
             float is = 0.5f / s;
             return Quaternion((_m.cloumn[1].v[0] + _m.cloumn[0].v[1]) * is,
-                        0.5f * s,
-                        (_m.cloumn[2].v[1] + _m.cloumn[1].v[2]) * is,
-                        (_m.cloumn[2].v[0] - _m.cloumn[0].v[2]) * is);
+                              0.5f * s,
+                              (_m.cloumn[2].v[1] + _m.cloumn[1].v[2]) * is,
+                              (_m.cloumn[2].v[0] - _m.cloumn[0].v[2]) * is);
         }
         else
         {
             float s = sqrt(_m.cloumn[2].v[2] - (_m.cloumn[0].v[0] + _m.cloumn[1].v[1]) + 1);
             float is = 0.5f / s;
             return Quaternion((_m.cloumn[0].v[2] + _m.cloumn[2].v[0]) * is,
-                        (_m.cloumn[2].v[1] + _m.cloumn[1].v[2]) * is,
-                        0.5f * s,
-                        (_m.cloumn[0].v[1] - _m.cloumn[1].v[0]) * is);
+                              (_m.cloumn[2].v[1] + _m.cloumn[1].v[2]) * is,
+                              0.5f * s,
+                              (_m.cloumn[0].v[1] - _m.cloumn[1].v[0]) * is);
         }
     }
 }

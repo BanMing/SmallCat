@@ -6,7 +6,11 @@
 
 void VectorTest()
 {
-    Vector3 test(1, 2, 3);
+    Vector3 a(1, 2, 3);
+    Vector3 b(2, 3, 4);
+    float dotValue = dot(a, b);
+    Vector3 AcrossB = cross(a, b);
+    Vector3 BcrossA = cross(b, a);
 }
 
 void matrixTest()
@@ -57,25 +61,26 @@ void transformTest()
     Vector3 y = rotation * Vector3(0, 1, 0);
     Vector3 z = rotation * Vector3(0, 0, 1);
 
-    // Next, scale the basis vectors
-    x = x * scale.x;
-    y = y * scale.y;
-    z = z * scale.z;
+    // // Next, scale the basis vectors
+    // x = x * scale.x;
+    // y = y * scale.y;
+    // z = z * scale.z;
 
-    // Extract the position of the transform
-    Vector3 p = position;
+    // // Extract the position of the transform
+    // Vector3 p = position;
 
-    // Create matrix
-    Matrix4 oldMat4 = Matrix4(
-        x.x, x.y, x.z, 0,  // X basis (& Scale)
-        y.x, y.y, y.z, 0,  // Y basis (& scale)
-        z.x, z.y, z.z, 0,  // Z basis (& scale)
-        p.x, p.y, p.z, 1); // Position
+    // // Create matrix
+    // Matrix4 oldMat4 = Matrix4(
+    //     x.x, x.y, x.z, 0,  // X basis (& Scale)
+    //     y.x, y.y, y.z, 0,  // Y basis (& scale)
+    //     z.x, z.y, z.z, 0,  // Z basis (& scale)
+    //     p.x, p.y, p.z, 1); // Position
 
     Transform trans(position, rotation, scale);
-    
+    Matrix4 rotationMat4 = quatToMat4(rotation);
     Matrix4 transMat4 = transformToMat4(trans);
 }
+
 int main(int, char **)
 {
     std::cout << "Hello, world!\n";

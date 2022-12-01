@@ -3,38 +3,59 @@
 Matrix4 transformToMat4(const Transform &_trans)
 {
     // M = SRT
+
+    // Matrix4 rotationMat4 = quatToMat4(_trans.rotation);
+
+    // Matrix4 scaleMat4(_trans.scale.x, 0, 0, 0,
+    //                   0, _trans.scale.y, 0, 0,
+    //                   0, 0, _trans.scale.z, 0,
+    //                   0, 0, 0, 1);
+
+    // Matrix4 translateMat4(1, 0, 0, 0,
+    //                       0, 1, 0, 0,
+    //                       0, 0, 1, 0,
+    //                       _trans.position.x, _trans.position.y, _trans.position.z, 1);
+
+    // res = translateMat4 * rotationMat4 * scaleMat4;
+
+    const float x = _trans.rotation.x;
+    const float y = _trans.rotation.y;
+    const float z = _trans.rotation.z;
+    const float w = _trans.rotation.w;
+    const float x2 = x + x;
+    const float y2 = y + y;
+    const float z2 = z + z;
+
+    const float xx = x * x2;
+    const float xy = x * y2;
+    const float xz = x * z2;
+    const float yy = y * y2;
+    const float yz = y * z2;
+    const float zz = z * z2;
+    const float wx = w * x2;
+    const float wy = w * y2;
+    const float wz = w * z2;
+    
+    const float sx = _trans.scale.x;
+    const float sy = _trans.scale.y;
+    const float sz = _trans.scale.z;
+
     Matrix4 res;
-
-    Matrix4 rotationMat4 = quatToMat4(_trans.rotation);
-    Matrix4 scaleMat4(_trans.scale.x, 0, 0, 0,
-                      0, _trans.scale.y, 0, 0,
-                      0, 0, _trans.scale.z, 0,
-                      0, 0, 0, 1);
-    Matrix4 translateMat4(1, 0, 0, 0,
-                          0, 1, 0, 0,
-                          0, 0, 1, 0,
-                          _trans.position.x, _trans.position.y, _trans.position.z, 1);
-    res = translateMat4 * rotationMat4 * scaleMat4;
-    Matrix4 res1 = scaleMat4 * rotationMat4 * translateMat4;
-
-    // res.cloumn[0].x = rotationMat4.cloumn[0].x * _trans.scale.x;
-    // res.cloumn[0].y = rotationMat4.cloumn[0].y * _trans.scale.y;
-    // res.cloumn[0].z = rotationMat4.cloumn[0].z * _trans.scale.z;
-    // res.cloumn[0].w = 0;
-
-    // res.cloumn[1].x = rotationMat4.cloumn[1].x * _trans.scale.x;
-    // res.cloumn[1].y = rotationMat4.cloumn[1].y * _trans.scale.y;
-    // res.cloumn[1].z = rotationMat4.cloumn[1].z * _trans.scale.z;
-    // res.cloumn[1].w = 0;
-
-    // res.cloumn[2].x = rotationMat4.cloumn[2].x * _trans.scale.x;
-    // res.cloumn[2].y = rotationMat4.cloumn[2].y * _trans.scale.y;
-    // res.cloumn[2].z = rotationMat4.cloumn[2].z * _trans.scale.z;
-    // res.cloumn[2].w = 0;
-
-    // res.cloumn[3].x = _trans.position.x;
-    // res.cloumn[3].y = _trans.position.y;
-    // res.cloumn[3].z = _trans.position.z;
-    // res.cloumn[3].w = 1;
+    res.m[0] = (1 - (yy + zz)) * sx;
+    res.m[1] = (xy + wz) * sx;
+    res.m[2] = (xz - wy) * sx;
+    res.m[3] = 0;
+    res.m[4] = (xy - wz) * sy;
+    res.m[5] = (1 - (xx + zz)) * sy;
+    res.m[6] = (yz + wx) * sy;
+    res.m[7] = 0;
+    res.m[8] = (xz + wy) * sz;
+    res.m[9] = (yz - wx) * sz;
+    res.m[10] = (1 - (xx + yy)) * sz;
+    res.m[11] = 0;
+    res.m[12] = _trans.position.x;
+    res.m[13] = _trans.position.y;
+    res.m[14] = _trans.position.z;
+    res.m[15] = 1;
     return res;
 }
