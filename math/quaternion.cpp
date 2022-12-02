@@ -227,6 +227,7 @@ Matrix4 quatToMat4(const Quaternion &_q)
                    0.0f, 0.0f, 0.0f, 1.0f);
 }
 
+// matrix4 without scaling information
 Quaternion mat4ToQuat(const Matrix4 &_m)
 {
     float trace = _m.cloumn[0].v[0] + _m.cloumn[1].v[1] + _m.cloumn[2].v[2];

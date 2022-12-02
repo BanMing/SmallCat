@@ -33,11 +33,32 @@ Transform mat4ToTransform(const Matrix4 &_m)
 {
     Transform res;
     res.position = Vector3(_m.m[12], _m.m[13], _m.m[14]);
-    res.rotation = mat4ToQuat(_m);
 
     res.scale.x = sqrt(_m.m[0] * _m.m[0] + _m.m[1] * _m.m[1] + _m.m[2] * _m.m[2]);
     res.scale.y = sqrt(_m.m[4] * _m.m[4] + _m.m[5] * _m.m[5] + _m.m[6] * _m.m[6]);
     res.scale.z = sqrt(_m.m[8] * _m.m[8] + _m.m[9] * _m.m[9] + _m.m[10] * _m.m[10]);
 
+    Matrix4 m = _m;
+    float rn;
+    // Factor the scale out of the matrix axes.
+    rn = 1.0F / res.scale.x;
+    m.cloumn[0].x *= rn;
+    m.cloumn[0].y *= rn;
+    m.cloumn[0].z *= rn;
+
+    rn = 1.0F / res.scale.y;
+    m.cloumn[1].x *= rn;
+    m.cloumn[1].y *= rn;
+    m.cloumn[1].z *= rn;
+
+    rn = 1.0F / res.scale.z;
+    m.cloumn[2].x *= rn;
+    m.cloumn[2].y *= rn;
+    m.cloumn[2].z *= rn;
+
+    res.rotation = mat4ToQuat(m);
     return res;
 }
+
+Vector3 transformPoint(const Transform &_t, const Vector3 &_p){}
+Vector3 transformVector(const Transform &_t, const Vector3 &_v){}

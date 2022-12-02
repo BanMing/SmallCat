@@ -61,24 +61,28 @@ void transformTest()
     Vector3 y = rotation * Vector3(0, 1, 0);
     Vector3 z = rotation * Vector3(0, 0, 1);
 
-    // // Next, scale the basis vectors
-    // x = x * scale.x;
-    // y = y * scale.y;
-    // z = z * scale.z;
+    // Next, scale the basis vectors
+    x = x * scale.x;
+    y = y * scale.y;
+    z = z * scale.z;
 
-    // // Extract the position of the transform
-    // Vector3 p = position;
+    // Extract the position of the transform
+    Vector3 p = position;
 
-    // // Create matrix
-    // Matrix4 oldMat4 = Matrix4(
-    //     x.x, x.y, x.z, 0,  // X basis (& Scale)
-    //     y.x, y.y, y.z, 0,  // Y basis (& scale)
-    //     z.x, z.y, z.z, 0,  // Z basis (& scale)
-    //     p.x, p.y, p.z, 1); // Position
+    // Create matrix
+    Matrix4 oldMat4 = Matrix4(
+        x.x, x.y, x.z, 0,  // X basis (& Scale)
+        y.x, y.y, y.z, 0,  // Y basis (& scale)
+        z.x, z.y, z.z, 0,  // Z basis (& scale)
+        p.x, p.y, p.z, 1); // Position
 
     Transform trans(position, rotation, scale);
     Matrix4 rotationMat4 = quatToMat4(rotation);
+    Quaternion mat4Quat = mat4ToQuat(rotationMat4);
+
     Matrix4 transMat4 = transformToMat4(trans);
+    Quaternion mat4Quat1 = mat4ToQuat(transMat4);
+    Transform mat4Trans = mat4ToTransform(transMat4);
 }
 
 int main(int, char **)
