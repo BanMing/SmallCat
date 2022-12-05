@@ -1,4 +1,5 @@
 #include "transform.h"
+#include "constants.h"
 #include <cmath>
 
 Matrix4 transformToMat4(const Transform &_trans)
@@ -31,6 +32,7 @@ Matrix4 transformToMat4(const Transform &_trans)
 
 Transform mat4ToTransform(const Matrix4 &_m)
 {
+    // M = SRT
     Transform res;
     res.position = Vector3(_m.m[12], _m.m[13], _m.m[14]);
 
@@ -60,5 +62,43 @@ Transform mat4ToTransform(const Matrix4 &_m)
     return res;
 }
 
-Vector3 transformPoint(const Transform &_t, const Vector3 &_p){}
-Vector3 transformVector(const Transform &_t, const Vector3 &_v){}
+Transform transformToTargetSpace(const Transform &_target, const Transform &_t)
+{
+    Transform res;
+    res.scale = _target.scale * _t.scale;
+    res.rotation = _target.rotation * _t.rotation;
+
+    res.position = _target.rotation * (_target.scale * _t.position);
+    res.position = _target.position + res.position;
+    
+    return res;
+}
+
+Vector3 transformPoint(const Transform &_t, const Vector3 &_p)
+{
+    Vector3 res;
+    res = _t.rotation * (_t.scale * _p);
+    res = _t.position + res;
+    return res;
+}
+
+Vector3 transformVector(const Transform &_t, const Vector3 &_v)
+{
+    Vector3 res;
+    res = _t.rotation * (_t.scale * _v);
+    return res;
+}
+
+Transform inverse(const Transform &_t)
+{
+    Transform res;
+    res.rotation = inverse(_t.rotation);
+
+    res.scale.x = fabs(_t.scale.x) < kFloatEpsilon ? 0.0f : 1.0f / _t.scale.x;
+    res.scale.y = fabs(_t.scale.y) < kFloatEpsilon ? 0.0f : 1.0f / _t.scale.y;
+    res.scale.z = fabs(_t.scale.z) < kFloatEpsilon ? 0.0f : 1.0f / _t.scale.z;
+
+    Vector3 invTranslation = _t.position * -1.0f;
+    res.position = res.rotation * (res.scale * invTranslation);
+    return res;
+}

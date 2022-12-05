@@ -61,6 +61,17 @@ Quaternion operator*(const Quaternion &_q, float _s)
     return Quaternion(_q.x * _s, _q.y * _s, _q.z * _s, _q.w * _s);
 }
 
+Quaternion operator^(const Quaternion &_q, float _s)
+{
+    float angle = 2.0f * acos(_q.w);
+    Vector3 axis = normalized(Vector3(_q.x, _q.y, _q.z));
+
+    float halfCos = cos(_s * angle * 0.5f);
+    float halfSin = sin(_s * angle * 0.5f);
+
+    return Quaternion(axis.x * halfSin, axis.y * halfSin, axis.z * halfSin, halfCos);
+}
+
 Vector3 operator*(const Quaternion &_q, const Vector3 &_v)
 {
     // V' = V + 2w(Q x V) + (2Q x (Q x V))

@@ -37,6 +37,7 @@ Quaternion operator+(const Quaternion &_a, const Quaternion &_b);
 Quaternion operator-(const Quaternion &_a, const Quaternion &_b);
 Quaternion operator-(const Quaternion &_q);
 Quaternion operator*(const Quaternion &_q, float _s);
+Quaternion operator^(const Quaternion &_q, float _s);
 Vector3 operator*(const Quaternion &_q, const Vector3 &_v);
 Quaternion operator*(const Quaternion &_a, const Quaternion &_b);
 

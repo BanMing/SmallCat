@@ -29,7 +29,9 @@ Vector3 normalized(const Vector3 &_v);
 
 Vector3 operator+(const Vector3 &_l, const Vector3 &_r);
 Vector3 operator-(const Vector3 &_l, const Vector3 &_r);
+Vector3 operator*(const Vector3 &_l, const Vector3 &_r);
 Vector3 operator*(const Vector3 &_v, float _scaler);
+Vector3 operator/(const Vector3 &_v, float _scaler);
 
 float dot(const Vector3 &_l, const Vector3 &_r);
 Vector3 cross(const Vector3 &_l, const Vector3 &_r);

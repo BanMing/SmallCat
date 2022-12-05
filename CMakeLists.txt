@@ -6,10 +6,11 @@ project(GameAnimation VERSION 0.1.0)
 
 file(GLOB_RECURSE ExampleSrc examples/*.h examples/*.cpp)
 file(GLOB_RECURSE MathSrc math/*.h math/*.cpp)
+file(GLOB_RECURSE AniamtionSrc animation/*.h animation/*.cpp)
 
 include(test/CMakeLists.txt)
 
-add_executable(GameAnimation main.cpp ${ExampleSrc} ${MathSrc})
+add_executable(GameAnimation main.cpp ${ExampleSrc} ${MathSrc} ${AniamtionSrc})
 
 add_subdirectory(bgfx.cmake)
 

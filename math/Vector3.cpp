@@ -50,9 +50,19 @@ Vector3 operator-(const Vector3 &_l, const Vector3 &_r)
     return Vector3(_l.x - _r.x, _l.y - _r.y, _l.z - _r.z);
 }
 
+Vector3 operator*(const Vector3 &_l, const Vector3 &_r)
+{
+    return Vector3(_l.x * _r.x, _l.y * _r.y, _l.z * _r.z);
+}
+
 Vector3 operator*(const Vector3 &_v, float _scaler)
 {
     return Vector3(_v.x * _scaler, _v.y * _scaler, _v.z * _scaler);
+}
+
+Vector3 operator/(const Vector3 &_v, float _scaler)
+{
+    return Vector3(_v.x / _scaler, _v.y / _scaler, _v.z / _scaler);
 }
 
 float dot(const Vector3 &_l, const Vector3 &_r)
