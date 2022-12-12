@@ -1,8 +1,12 @@
 #include <iostream>
+#include <cmath>
 #include "../math/matrix4.h"
 #include "../math/vector3.h"
 #include "../math/quaternion.h"
 #include "../math/transform.h"
+#include "../animation/animation_clip.h"
+#define CGLTF_IMPLEMENTATION
+#include "../gltf/gltf_loader.h"
 
 void VectorTest()
 {
@@ -85,12 +89,23 @@ void transformTest()
     Transform mat4Trans = mat4ToTransform(transMat4);
 }
 
+void gltfTest()
+{
+    cgltf_data *data = loadGLTFFile("../assets/test.gltf");
+    std::vector<AnimationClip> clips = loadAnimationClips(data);
+    freeGLTFFile(data);
+}
+
 int main(int, char **)
 {
     std::cout << "Hello, world!\n";
-    VectorTest();
-    matrixTest();
-    quaternionTest();
-    transformTest();
+    // VectorTest();
+    // matrixTest();
+    // quaternionTest();
+    // transformTest();
+    gltfTest();
+    std::cout << fmod(3, 2) << std::endl;
+    std::cout << fmod(3.2, 2.1) << std::endl;
+    std::cout << fmod(33.2, 2.1) << std::endl;
     return 0;
 }

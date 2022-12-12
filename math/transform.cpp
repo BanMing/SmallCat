@@ -62,7 +62,7 @@ Transform mat4ToTransform(const Matrix4 &_m)
     return res;
 }
 
-Transform transformToTargetSpace(const Transform &_target, const Transform &_t)
+Transform getTargetSpaceTransform(const Transform &_target, const Transform &_t)
 {
     Transform res;
     res.scale = _target.scale * _t.scale;

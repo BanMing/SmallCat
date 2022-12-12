@@ -17,7 +17,7 @@ struct Transform
 Matrix4 transformToMat4(const Transform &_trans);
 Transform mat4ToTransform(const Matrix4 &_m);
 
-Transform transformToTargetSpace(const Transform& _target, const Transform& _t);
+Transform getTargetSpaceTransform(const Transform& _target, const Transform& _t);
 
 Transform inverse(const Transform& _t);
 Vector3 transformPoint(const Transform &_t, const Vector3 &_p);

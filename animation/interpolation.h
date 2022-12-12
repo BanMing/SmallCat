@@ -1,8 +1,16 @@
 #ifndef _INTERPOLATION_H_
 #define _INTERPOLATION_H_
 
-#include "../math/Vector3.h"
+#include "../math/vector3.h"
 #include "../math/quaternion.h"
+
+enum class InterpolationType
+{
+	Step,
+	Linear,
+	Cubic
+};
+
 // Vector3 Interpolation
 Vector3 lerp(const Vector3 &_from, const Vector3 &_to, float _t);
 Vector3 nlerp(const Vector3 &_from, const Vector3 &_to, float _t);
