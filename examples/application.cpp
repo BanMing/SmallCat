@@ -8,8 +8,6 @@ void Application::init(int32_t _argc, const char *const *_argv, uint32_t _width,
     m_height = _height;
     m_debug = BGFX_DEBUG_TEXT;
     m_reset = BGFX_RESET_VSYNC;
-    
-    onInit();
 
     bgfx::Init init;
     init.type = args.m_type;
@@ -28,6 +26,8 @@ void Application::init(int32_t _argc, const char *const *_argv, uint32_t _width,
     bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x303030ff, 1.0f, 0);
 
     imguiCreate();
+    
+    onInit();
 }
 
 int Application::shutdown()

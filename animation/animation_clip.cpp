@@ -11,6 +11,14 @@ AnimationClip ::AnimationClip()
     m_endTime = 0.0f;
 }
 
+AnimationClip::~AnimationClip()
+{
+    for (size_t i = 0; i < m_animated_joints.size(); i++)
+    {
+        delete m_animated_joints[i];
+    }
+}
+
 float AnimationClip::clampTime(float _inTime) const
 {
     if (m_isLooping && _inTime > m_duration)
@@ -32,17 +40,17 @@ float AnimationClip::clampTime(float _inTime) const
     return _inTime;
 }
 
-AnimatedJoint &AnimationClip ::operator[](size_t _index)
+AnimatedJoint *AnimationClip ::operator[](size_t _jointID)
 {
     for (size_t i = 0; i < m_animated_joints.size(); i++)
     {
-        if (m_animated_joints[i].m_index == _index)
+        if (m_animated_joints[i]->m_jointID == _jointID)
         {
             return m_animated_joints[i];
         }
     }
 
-    AnimatedJoint newAnimatedJoint;
+    AnimatedJoint *newAnimatedJoint = new AnimatedJoint();
     m_animated_joints.push_back(newAnimatedJoint);
 
     return m_animated_joints[m_animated_joints.size() - 1];

@@ -5,7 +5,6 @@
 #include "../math/quaternion.h"
 #include "../math/transform.h"
 #include "../animation/animation_clip.h"
-#define CGLTF_IMPLEMENTATION
 #include "../gltf/gltf_loader.h"
 
 void VectorTest()
@@ -91,7 +90,8 @@ void transformTest()
 
 void gltfTest()
 {
-    cgltf_data *data = loadGLTFFile("../assets/test.gltf");
+    // cgltf_data *data = loadGLTFFile("../assets/test.gltf");
+    cgltf_data *data = loadGLTFFile("../assets/Woman.gltf");
     std::vector<AnimationClip> clips = loadAnimationClips(data);
     freeGLTFFile(data);
 }

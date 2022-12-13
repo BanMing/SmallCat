@@ -5,7 +5,6 @@
 #include <vector>
 
 // #define CGLTF_VALIDATE_ENABLE_ASSERTS BX_CONFIG_DEBUG
-
 #include <cgltf/cgltf.h>
 
 cgltf_data *loadGLTFFile(const char *_path);

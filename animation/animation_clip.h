@@ -10,7 +10,7 @@
 class AnimationClip
 {
 protected:
-    std::vector<AnimatedJoint> m_animated_joints;
+    std::vector<AnimatedJoint *> m_animated_joints;
     std::string m_clipName;
     bool m_isLooping;
     float m_duration;
@@ -21,9 +21,9 @@ protected:
     float clampTime(float _inTime) const;
 
 public:
-    std::vector<TransfromTrack> m_transformTracks;
     AnimationClip();
-    AnimatedJoint &operator[](size_t index);
+    ~AnimationClip();
+    AnimatedJoint *operator[](size_t _jointID);
 
     void setName(const std::string &_newName);
     const std::string &getName() const;
