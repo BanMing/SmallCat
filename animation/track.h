@@ -6,18 +6,22 @@
 #include <vector>
 
 template <typename T>
-struct Track
+class Track
 {
-    InterpolationType interpolation = InterpolationType::Linear;
-    std::vector<Keyframe<T> *> m_keyframes;
-    Track() {}
-    ~Track()
-    {
-        for (size_t i = 0; i < m_keyframes.size(); i++)
-        {
-            delete m_keyframes[i];
-        }
-    }
+protected:
+    InterpolationType m_interpolation = InterpolationType::Linear;
+    std::vector<Keyframe<T>> m_keyframes;
+
+public:
+    Track();
+    void setInterpolation(InterpolationType _interpolation);
+    void resize(size_t _size);
+
+    InterpolationType getInterpolation() const;
+    Keyframe<T> &operator[](size_t _index);
+
+    float getStartTime() const;
+    float getEndTime() const;
 };
 
 typedef Track<Vector3> VectorTrack;

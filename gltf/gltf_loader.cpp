@@ -30,7 +30,7 @@ void getFloatValues(std::vector<float> &_outFloats, size_t _inComponentCount, co
 }
 
 template <typename T>
-void setKeyframeValueFromSampler(Keyframe<T> *_keyframe, bool _isSampleCubic, size_t _curFrameNum, size_t _componentCount, const std::vector<float> &_floatValues)
+void setKeyframeValueFromSampler(Keyframe<T> &_keyframe, bool _isSampleCubic, size_t _curFrameNum, size_t _componentCount, const std::vector<float> &_floatValues)
 {
     int baseIndex = _curFrameNum * _componentCount * (_isSampleCubic ? 3 : 1);
     int offset = 0;
@@ -43,8 +43,8 @@ void setKeyframeValueFromSampler(Keyframe<T> *_keyframe, bool _isSampleCubic, si
         {
             temp[j] = _floatValues[baseIndex + offset++];
         }
-        CubicKeyframe<T> *keyframe = static_cast<CubicKeyframe<T> *>(_keyframe);
-        memcpy(&keyframe->m_inTangent, &temp, sizeof(float) * _componentCount);
+        CubicKeyframe<T> &keyframe = static_cast<CubicKeyframe<T> &>(_keyframe);
+        memcpy(&keyframe.m_inTangent, &temp, sizeof(float) * _componentCount);
     }
 
     // set current keyframe value
@@ -52,7 +52,7 @@ void setKeyframeValueFromSampler(Keyframe<T> *_keyframe, bool _isSampleCubic, si
     {
         temp[j] = _floatValues[baseIndex + offset++];
     }
-    memcpy(&_keyframe->m_value, &temp, sizeof(float) * _componentCount);
+    memcpy(&_keyframe.m_value, &temp, sizeof(float) * _componentCount);
 
     // set current keyframe out tangent
     if (_isSampleCubic)
@@ -61,8 +61,8 @@ void setKeyframeValueFromSampler(Keyframe<T> *_keyframe, bool _isSampleCubic, si
         {
             temp[j] = _floatValues[baseIndex + offset++];
         }
-        CubicKeyframe<T> *keyframe = static_cast<CubicKeyframe<T> *>(_keyframe);
-        memcpy(&keyframe->m_outTangent, &temp, sizeof(float) * _componentCount);
+        CubicKeyframe<T> &keyframe = static_cast<CubicKeyframe<T> &>(_keyframe);
+        memcpy(&keyframe.m_outTangent, &temp, sizeof(float) * _componentCount);
     }
 }
 
@@ -75,13 +75,13 @@ void setTrackFromChannel(Track<T> &_track, const cgltf_animation_channel &_chann
     switch (sampler.interpolation)
     {
     case cgltf_interpolation_type_step:
-        _track.interpolation = InterpolationType::Step;
+        _track.setInterpolation(InterpolationType::Step);
         break;
     case cgltf_interpolation_type_cubic_spline:
-        _track.interpolation = InterpolationType::Cubic;
+        _track.setInterpolation(InterpolationType::Cubic);
         break;
     default:
-        _track.interpolation = InterpolationType::Linear;
+        _track.setInterpolation(InterpolationType::Linear);
         break;
     }
 
@@ -92,14 +92,14 @@ void setTrackFromChannel(Track<T> &_track, const cgltf_animation_channel &_chann
     getFloatValues(floatValues, _componentCount, *sampler.output);
 
     size_t framesNum = sampler.input->count;
-    _track.m_keyframes.resize(framesNum);
+    _track.resize(framesNum);
 
     // Copy data to track keyframe
     for (size_t i = 0; i < framesNum; ++i)
     {
-        _track.m_keyframes[i] = isSampleCubic ? new CubicKeyframe<T>() : new Keyframe<T>();
-        _track.m_keyframes[i]->m_time = timelineFloats[i];
-        setKeyframeValueFromSampler(_track.m_keyframes[i], isSampleCubic, i, _componentCount, floatValues);
+        Keyframe<T> &keyframe = _track[i];
+        keyframe.m_time = timelineFloats[i];
+        setKeyframeValueFromSampler(keyframe, isSampleCubic, i, _componentCount, floatValues);
     }
 }
 
@@ -166,21 +166,21 @@ std::vector<AnimationClip> loadAnimationClips(cgltf_data *_data)
             cgltf_node *node = channel.target_node;
             size_t nodeId = getNodeIndex(node, _data->nodes, _data->nodes_count);
 
-            AnimatedJoint *animatedJoint = res[i][nodeId];
-            animatedJoint->m_jointID = nodeId;
-            animatedJoint->m_jointName = node->name;
+            AnimatedJoint &animatedJoint = res[i][nodeId];
+            animatedJoint.m_jointID = nodeId;
+            animatedJoint.m_jointName = node->name;
 
             if (channel.target_path == cgltf_animation_path_type_translation)
             {
-                setTrackFromChannel(animatedJoint->m_positionTrack, channel, 3);
+                setTrackFromChannel<Vector3>(animatedJoint.m_positionTrack, channel, 3);
             }
             else if (channel.target_path == cgltf_animation_path_type_scale)
             {
-                setTrackFromChannel(animatedJoint->m_scaleTrack, channel, 3);
+                setTrackFromChannel<Vector3>(animatedJoint.m_scaleTrack, channel, 3);
             }
             else if (channel.target_path == cgltf_animation_path_type_rotation)
             {
-                setTrackFromChannel(animatedJoint->m_rotationTrack, channel, 4);
+                setTrackFromChannel<Quaternion>(animatedJoint.m_rotationTrack, channel, 4);
             }
         }
 

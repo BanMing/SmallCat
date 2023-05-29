@@ -14,6 +14,11 @@ struct AnimatedJoint
     VectorTrack m_positionTrack;
     QuaternionTrack m_rotationTrack;
     VectorTrack m_scaleTrack;
+    AnimatedJoint()
+    {
+        m_jointID = 0;
+        m_jointName = "";
+    }
 };
 
 #endif //_JOINT_ANIMATION_TRACK_H_

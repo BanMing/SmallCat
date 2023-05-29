@@ -93,6 +93,17 @@ void gltfTest()
     // cgltf_data *data = loadGLTFFile("../assets/test.gltf");
     cgltf_data *data = loadGLTFFile("../assets/Woman.gltf");
     std::vector<AnimationClip> clips = loadAnimationClips(data);
+    printf("Clips Size: %zu\n", clips.size());
+    for (size_t i = 0; i < clips.size(); i++)
+    {
+        printf("clip name: %s looping: %d\n", clips[i].getName().c_str(), clips[i].isLooping());
+        // for (size_t j = 0; j < clips[i].size(); j++)
+        // {
+        //     AnimatedJoint &joint = clips[i][j];
+        //     printf("    joint name:%s id:%zu\n", joint.m_jointName.c_str(), joint.m_jointID);
+        // }
+    }
+
     freeGLTFFile(data);
 }
 
@@ -104,8 +115,8 @@ int main(int, char **)
     // quaternionTest();
     // transformTest();
     gltfTest();
-    std::cout << fmod(3, 2) << std::endl;
-    std::cout << fmod(3.2, 2.1) << std::endl;
-    std::cout << fmod(33.2, 2.1) << std::endl;
+    // std::cout << fmod(3, 2) << std::endl;
+    // std::cout << fmod(3.2, 2.1) << std::endl;
+    // std::cout << fmod(33.2, 2.1) << std::endl;
     return 0;
 }

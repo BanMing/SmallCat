@@ -13,10 +13,11 @@ AnimationClip ::AnimationClip()
 
 AnimationClip::~AnimationClip()
 {
-    for (size_t i = 0; i < m_animated_joints.size(); i++)
-    {
-        delete m_animated_joints[i];
-    }
+}
+
+size_t AnimationClip::size() const
+{
+    return m_animated_joints.size();
 }
 
 float AnimationClip::clampTime(float _inTime) const
@@ -40,17 +41,17 @@ float AnimationClip::clampTime(float _inTime) const
     return _inTime;
 }
 
-AnimatedJoint *AnimationClip ::operator[](size_t _jointID)
+AnimatedJoint &AnimationClip ::operator[](size_t _jointID)
 {
     for (size_t i = 0; i < m_animated_joints.size(); i++)
     {
-        if (m_animated_joints[i]->m_jointID == _jointID)
+        if (m_animated_joints[i].m_jointID == _jointID)
         {
             return m_animated_joints[i];
         }
     }
 
-    AnimatedJoint *newAnimatedJoint = new AnimatedJoint();
+    AnimatedJoint newAnimatedJoint;
     m_animated_joints.push_back(newAnimatedJoint);
 
     return m_animated_joints[m_animated_joints.size() - 1];
@@ -61,28 +62,26 @@ void AnimationClip ::setName(const std::string &_newName)
     m_clipName = _newName;
 }
 
-const std::string &AnimationClip ::getName() const
+std::string &AnimationClip ::getName()
 {
     return m_clipName;
 }
 
 void AnimationClip ::updateDuration()
 {
-    // m_startTime = MAXFLOAT;
-    // m_endTime = 0;
+    m_startTime = MAXFLOAT;
+    m_endTime = 0;
 
-    // for (size_t i = 0; i < m_animated_joints.size(); i++)
-    // {
-    //     for (size_t j = 0; j < m_animated_joints[i].m_keyframes.size(); j++)
-    //     {
-    //         m_startTime = m_animated_joints[i].m_keyframes[j].m_time < m_startTime ? m_animated_joints[i].m_keyframes[j].m_time : m_startTime;
+    for (size_t i = 0; i < m_animated_joints.size(); i++)
+    {
+        float trackEndTime = m_animated_joints[i].m_positionTrack.getEndTime();
+        float trackStartTime = m_animated_joints[i].m_positionTrack.getStartTime();
+        m_startTime = m_startTime < trackStartTime ? m_startTime : trackStartTime;
+        m_endTime = m_endTime > trackEndTime ? m_endTime : trackEndTime;
+    }
 
-    //         m_endTime = m_animated_joints[i].m_keyframes[j].m_time > m_endTime ? m_animated_joints[i].m_keyframes[j].m_time : m_endTime;
-    //     }
-    // }
-
-    // m_startTime = MAXFLOAT == m_startTime ? 0 : m_startTime;
-    // m_duration = m_endTime - m_startTime;
+    m_startTime = MAXFLOAT == m_startTime ? 0 : m_startTime;
+    m_duration = m_endTime - m_startTime;
 }
 
 float AnimationClip ::getDuration() const

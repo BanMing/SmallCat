@@ -81,5 +81,7 @@
         "variant": "cpp",
         "algorithm": "cpp",
         "filesystem": "cpp"
-    }
+    },
+    "C_Cpp.intelliSenseCachePath": "",
+    "cmake.languageSupport.dotnetPath": "/usr/local/share/dotnet/dotnet"
 }
