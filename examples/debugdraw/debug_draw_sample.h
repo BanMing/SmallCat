@@ -5,6 +5,12 @@
 
 class DebugDrawSample : public Application
 {
+
+protected:
+    bgfx::VertexBufferHandle m_vertex_buffer_handle;
+    bgfx::IndexBufferHandle m_index_buffer_handle;
+    bgfx::ProgramHandle m_program;
+
 public:
     DebugDrawSample(const char *_name, const char *_description)
         : Application(_name, _description)
