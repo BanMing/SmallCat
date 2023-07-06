@@ -1,15 +1,17 @@
-#ifndef _DEBUG_DRAW_SAMPLE_H_
-#define _DEBUG_DRAW_SAMPLE_H_
+#ifndef _POSE_SAMPLE_H_
+#define _POSE_SAMPLE_H_
 
+#include "../../animation/pose.h"
 #include "../application.h"
 
-class DebugDrawSample : public Application
+class PoseSample : public Application
 {
 
 protected:
+    Pose m_resetPose;
 
 public:
-    DebugDrawSample(const char *_name, const char *_description)
+    PoseSample(const char *_name, const char *_description)
         : Application(_name, _description)
     {
     }
@@ -22,4 +24,4 @@ protected:
     void onGui() override;
 };
 
-#endif //_DEBUG_DRAW_SAMPLE_H_
+#endif //_POSE_SAMPLE_H_

@@ -3,6 +3,40 @@
 #include "../animation/keyframe.h"
 #include <iostream>
 
+Transform getNodeTransform(cgltf_node *_node)
+{
+    Transform reslut;
+
+    if (_node->has_matrix)
+    {
+        reslut = mat4ToTransform(_node->matrix);
+    }
+
+    if (_node->has_translation)
+    {
+        reslut.position.x = _node->translation[0];
+        reslut.position.y = _node->translation[1];
+        reslut.position.z = _node->translation[2];
+    }
+
+    if (_node->has_scale)
+    {
+        reslut.scale.x = _node->scale[0];
+        reslut.scale.y = _node->scale[1];
+        reslut.scale.z = _node->scale[2];
+    }
+
+    if (_node->has_matrix)
+    {
+        reslut.rotation.x = _node->rotation[0];
+        reslut.rotation.y = _node->rotation[1];
+        reslut.rotation.z = _node->rotation[2];
+        reslut.rotation.z = _node->rotation[3];
+    }
+
+    return reslut;
+}
+
 size_t getNodeIndex(cgltf_node *_node, cgltf_node *_allNodes, size_t _nodesNum)
 {
     if (_node == 0)
@@ -188,4 +222,27 @@ std::vector<AnimationClip> loadAnimationClips(cgltf_data *_data)
     }
 
     return res;
+}
+
+Pose loadRestPose(cgltf_data *_data)
+{
+    size_t jointCount = _data->nodes_count;
+    Pose reslut(jointCount);
+
+    for (size_t i = 0; i < jointCount; i++)
+    {
+        cgltf_node *joint = &(_data->nodes[i]);
+        Transform localTransform = getNodeTransform(joint);
+        reslut.setLocalTransfrom(i, localTransform);
+
+        size_t parentIndex = getNodeIndex(joint->parent, _data->nodes, jointCount);
+        reslut.setParent(i, parentIndex);
+    }
+    
+    return reslut;
+}
+
+Pose loadBindPose(cgltf_data *_data)
+{
+    return Pose();
 }
