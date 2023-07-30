@@ -37,11 +37,9 @@ Pose &Pose::operator=(const Pose &_pose)
 
     if (m_joints.size() > 0)
     {
-        memcpy(&m_joints[0], &_pose.m_joints[0], sizeof(int) * m_joints.size());
+        memcpy(&m_joints[0], &_pose.m_joints[0], sizeof(Transform) * m_joints.size());
     }
 
-    *this = _pose;
-    
     return *this;
 }
 
@@ -78,15 +76,20 @@ void Pose::setLocalTransfrom(size_t _index, const Transform &_transfrom)
 
 Transform Pose::getGlobalTransform(size_t _index) const
 {
-    int curIndex = _index;
-    int parentIndex = m_parents[curIndex];
-    Transform res = m_joints[curIndex];
-    while (parentIndex >= 0)
+    // int curIndex = _index;
+    // int parentIndex = m_parents[curIndex];
+    Transform res = m_joints[_index];
+    // while (parentIndex >= 0)
+    // {
+    //     res = getTargetSpaceTransform(m_joints[parentIndex], m_joints[curIndex]);
+    //     curIndex = parentIndex;
+    //     parentIndex = m_parents[parentIndex];
+    // }
+    for (int parent = m_parents[_index]; parent >= 0; parent = m_parents[parent])
     {
-        res = getTargetSpaceTransform(m_joints[parentIndex], m_joints[curIndex]);
-        curIndex = parentIndex;
-        parentIndex = m_parents[curIndex];
+        res = getTargetSpaceTransform(m_joints[parent], res);
     }
+
     return res;
 }
 

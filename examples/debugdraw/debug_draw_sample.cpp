@@ -49,27 +49,27 @@ void DebugDrawSample::onRender(float _inAspectRatio)
     dde.setStipple(false, 4);
     dde.drawLineList(4, s_linesVertices, 4, s_linesIndices);
     dde.drawCylinder({2, 2, 0}, {2, 4, 0}, 0.1f);
-    dde.push();
-    {
-        bx::Sphere sphere = {{0.0f, 5.0f, 0.0f}, 1.0f};
-        dde.setWireframe(true);
-        dde.setLod(3);
-        dde.draw(sphere);
-        dde.setWireframe(false);
+    // dde.push();
+    // {
+    //     bx::Sphere sphere = {{0.0f, 5.0f, 0.0f}, 1.0f};
+    //     dde.setWireframe(true);
+    //     dde.setLod(3);
+    //     dde.draw(sphere);
+    //     dde.setWireframe(false);
 
-        sphere.center.x = -2.0f;
-        dde.setLod(2);
-        dde.draw(sphere);
+    //     sphere.center.x = -2.0f;
+    //     dde.setLod(2);
+    //     dde.draw(sphere);
 
-        sphere.center.x = -4.0f;
-        dde.setLod(1);
-        dde.draw(sphere);
+    //     sphere.center.x = -4.0f;
+    //     dde.setLod(1);
+    //     dde.draw(sphere);
 
-        sphere.center.x = -6.0f;
-        dde.setLod(0);
-        dde.draw(sphere);
-    }
-    dde.pop();
+    //     sphere.center.x = -6.0f;
+    //     dde.setLod(0);
+    //     dde.draw(sphere);
+    // }
+    // dde.pop();
 
     dde.end();
 }

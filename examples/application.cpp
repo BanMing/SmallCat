@@ -10,7 +10,7 @@ void Application::init(int32_t _argc, const char *const *_argv, uint32_t _width,
     m_reset = BGFX_RESET_VSYNC;
 
     bgfx::Init init;
-    init.type = args.m_type;
+    init.type =bgfx::RendererType::OpenGL;// args.m_type;
     init.vendorId = args.m_pciId;
     init.platformData.nwh = entry::getNativeWindowHandle(entry::kDefaultWindowHandle);
     init.platformData.ndt = entry::getNativeDisplayHandle();

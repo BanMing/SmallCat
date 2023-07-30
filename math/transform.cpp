@@ -66,11 +66,12 @@ Transform getTargetSpaceTransform(const Transform &_target, const Transform &_t)
 {
     Transform res;
     res.scale = _target.scale * _t.scale;
-    res.rotation = _target.rotation * _t.rotation;
+    // TODO: Find out 
+    res.rotation = _t.rotation * _target.rotation;
 
     res.position = _target.rotation * (_target.scale * _t.position);
     res.position = _target.position + res.position;
-    
+
     return res;
 }
 

@@ -26,12 +26,12 @@ Transform getNodeTransform(cgltf_node *_node)
         reslut.scale.z = _node->scale[2];
     }
 
-    if (_node->has_matrix)
+    if (_node->has_rotation)
     {
         reslut.rotation.x = _node->rotation[0];
         reslut.rotation.y = _node->rotation[1];
         reslut.rotation.z = _node->rotation[2];
-        reslut.rotation.z = _node->rotation[3];
+        reslut.rotation.w = _node->rotation[3];
     }
 
     return reslut;
@@ -68,7 +68,8 @@ void setKeyframeValueFromSampler(Keyframe<T> &_keyframe, bool _isSampleCubic, si
 {
     int baseIndex = _curFrameNum * _componentCount * (_isSampleCubic ? 3 : 1);
     int offset = 0;
-    float temp[_componentCount];
+    std::vector<float> temp;
+    temp.resize(_componentCount);
 
     // set current keyframe in tangent
     if (_isSampleCubic)
@@ -238,7 +239,7 @@ Pose loadRestPose(cgltf_data *_data)
         size_t parentIndex = getNodeIndex(joint->parent, _data->nodes, jointCount);
         reslut.setParent(i, parentIndex);
     }
-    
+
     return reslut;
 }
 

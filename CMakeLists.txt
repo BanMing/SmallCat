@@ -18,3 +18,8 @@ include(test/CMakeLists.txt)
 add_executable(GameAnimation main.cpp ${ExampleSrc} ${MathSrc} ${AniamtionSrc} ${GltfSrc})
 
 target_link_libraries(GameAnimation PUBLIC bx bimg bgfx example-common)
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT GameAnimation)
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+endif()

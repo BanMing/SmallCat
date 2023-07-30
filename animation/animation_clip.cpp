@@ -1,4 +1,5 @@
 #include "animation_clip.h"
+#include "../math/constants.h"
 #include "interpolation.h"
 #include <cmath>
 
@@ -69,7 +70,7 @@ std::string &AnimationClip ::getName()
 
 void AnimationClip ::updateDuration()
 {
-    m_startTime = MAXFLOAT;
+    m_startTime = kMaxFloat;
     m_endTime = 0;
 
     for (size_t i = 0; i < m_animated_joints.size(); i++)
@@ -80,7 +81,7 @@ void AnimationClip ::updateDuration()
         m_endTime = m_endTime > trackEndTime ? m_endTime : trackEndTime;
     }
 
-    m_startTime = MAXFLOAT == m_startTime ? 0 : m_startTime;
+    m_startTime = kMaxFloat == m_startTime ? 0 : m_startTime;
     m_duration = m_endTime - m_startTime;
 }
 
