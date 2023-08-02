@@ -1,21 +1,16 @@
-#ifndef _DEBUG_DRAW_H_ 
-#define _DEBUG_DRAW_H_ 
+#ifndef _DEBUG_DRAW_H_
+#define _DEBUG_DRAW_H_
 
-class DebugDraw
+#include "../animation/pose.h"
+#include <debugdraw/debugdraw.h>
+#include <vector>
+
+struct DebugDraw : DebugDrawEncoder
 {
 private:
-    /* data */
+    std::vector<DdVertex> m_poseVertices;
+
 public:
-    DebugDraw(/* args */);
-    ~DebugDraw();
+    void drawPose(const Pose &_pose);
 };
-
-DebugDraw::DebugDraw(/* args */)
-{
-}
-
-DebugDraw::~DebugDraw()
-{
-}
-
-#endif//_DEBUG_DRAW_H_
+#endif //_DEBUG_DRAW_H_

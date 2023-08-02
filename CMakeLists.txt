@@ -15,7 +15,7 @@ file(GLOB_RECURSE GraphicSrc graphic/*.h graphic/*.cpp)
 
 include(test/CMakeLists.txt)
 
-add_executable(GameAnimation main.cpp ${ExampleSrc} ${MathSrc} ${AniamtionSrc} ${GltfSrc})
+add_executable(GameAnimation main.cpp ${ExampleSrc} ${MathSrc} ${AniamtionSrc} ${GltfSrc} ${GraphicSrc})
 
 target_link_libraries(GameAnimation PUBLIC bx bimg bgfx example-common)
 

@@ -3,13 +3,13 @@
 
 #include "../../animation/pose.h"
 #include "../application.h"
-
+#include <debugdraw/debugdraw.h>
+#include <vector>
 class PoseSample : public Application
 {
 
 protected:
     Pose m_resetPose;
-
 public:
     PoseSample(const char *_name, const char *_description)
         : Application(_name, _description)

@@ -10,7 +10,7 @@ void Application::init(int32_t _argc, const char *const *_argv, uint32_t _width,
     m_reset = BGFX_RESET_VSYNC;
 
     bgfx::Init init;
-    init.type =bgfx::RendererType::OpenGL;// args.m_type;
+    init.type = bgfx::RendererType::Direct3D9; // args.m_type;
     init.vendorId = args.m_pciId;
     init.platformData.nwh = entry::getNativeWindowHandle(entry::kDefaultWindowHandle);
     init.platformData.ndt = entry::getNativeDisplayHandle();
@@ -62,7 +62,7 @@ bool Application::update()
         // if no other draw calls are submitted to view 0
         bgfx::touch(0);
 
-        const float inAspectRatio = float(m_width / m_height);
+        const float inAspectRatio = m_height > 0 ? float(m_width / m_height) : 0;
         onRender(inAspectRatio);
 
         // Advance to next frame. Rendering thread will be kicked to
