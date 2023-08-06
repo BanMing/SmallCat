@@ -245,5 +245,50 @@ Pose loadRestPose(cgltf_data *_data)
 
 Pose loadBindPose(cgltf_data *_data)
 {
-    return Pose();
+    Pose restPose = loadRestPose(_data);
+    size_t jointSize = restPose.getJointsSize();
+    std::vector<Transform> worldBindJoints(jointSize);
+    for (size_t i = 0; i < jointSize; i++)
+    {
+        worldBindJoints[i] = restPose.getGlobalTransform(i);
+    }
+
+    size_t skinsNum = _data->skins_count;
+    for (size_t i = 0; i < skinsNum; i++)
+    {
+        cgltf_skin *skin = &(_data->skins[i]);
+        std::vector<float> invBindFloats;
+        getFloatValues(invBindFloats, 16, *skin->inverse_bind_matrices);
+
+        for (size_t j = 0; j < skin->joints_count; j++)
+        {
+            // Read the ivnerse bind matrix of the joint
+            float *matrix = &(invBindFloats[j * 16]);
+            Matrix4 invBindMatrix = Matrix4(matrix);
+            // invert, convert to transform
+            Matrix4 bindMatrix = inverse(invBindMatrix);
+            Transform bindTransform = mat4ToTransform(bindMatrix);
+            // Set that transform in the worldBindJoints
+            cgltf_node *jointNode = skin->joints[j];
+            int jointIndex = getNodeIndex(jointNode, _data->nodes, jointSize);
+            worldBindJoints[jointIndex] = bindTransform;
+        }
+    }
+
+    // Convert the world bind pose to a regular bind pose
+    Pose bindPose = restPose;
+    for (size_t i = 0; i < jointSize; i++)
+    {
+        Transform current = worldBindJoints[i];
+        int parentIndex = bindPose.getParent(i);
+        if (parentIndex >= 0)
+        {
+            // Bring into parent space
+            Transform parent = worldBindJoints[parentIndex];
+            current = getTargetSpaceTransform(inverse(parent), current);
+        }
+        bindPose.setLocalTransfrom(i, current);
+    }
+
+    return bindPose;
 }

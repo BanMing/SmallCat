@@ -6,7 +6,7 @@ void PoseSample::onInit()
 {
     ddInit();
     cgltf_data *data = loadGLTFFile("../../assets/Woman.gltf");
-    m_resetPose = loadRestPose(data);
+    m_restPose = loadRestPose(data);
     freeGLTFFile(data);
 }
 
@@ -35,7 +35,7 @@ void PoseSample::onRender(float _inAspectRatio)
 {
     DebugDraw dd;
     dd.begin(0);
-    dd.drawPose(m_resetPose);
+    dd.drawPose(m_restPose);
     dd.end();
 }
 

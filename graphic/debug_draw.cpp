@@ -2,9 +2,9 @@
 
 void DebugDraw::drawPose(const Pose &_pose)
 {
-    const size_t jointNum = _pose.getJointsSize();
+    const uint32_t jointNum = (uint32_t)_pose.getJointsSize();
     m_poseVertices.resize(jointNum * 2);
-    for (size_t i = 0; i < jointNum; i++)
+    for (uint32_t i = 0; i < jointNum; i++)
     {
         int parentIndex = _pose.getParent(i);
         if (parentIndex >= 0)

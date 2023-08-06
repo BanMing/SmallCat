@@ -9,7 +9,7 @@ class PoseSample : public Application
 {
 
 protected:
-    Pose m_resetPose;
+    Pose m_restPose;
 public:
     PoseSample(const char *_name, const char *_description)
         : Application(_name, _description)

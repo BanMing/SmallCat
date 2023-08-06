@@ -10,6 +10,7 @@ class AnimationClipSample : public Application
 
 protected:
     Pose m_curPose;
+    Pose m_restPose;
     std::vector<AnimationClip> m_clips;
 
 public:
