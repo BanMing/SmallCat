@@ -66,8 +66,8 @@ void getFloatValues(std::vector<float> &_outFloats, size_t _inComponentCount, co
 template <typename T>
 void setKeyframeValueFromSampler(Keyframe<T> &_keyframe, bool _isSampleCubic, size_t _curFrameNum, size_t _componentCount, const std::vector<float> &_floatValues)
 {
-    int baseIndex = _curFrameNum * _componentCount * (_isSampleCubic ? 3 : 1);
-    int offset = 0;
+    size_t baseIndex = _curFrameNum * _componentCount * (_isSampleCubic ? 3 : 1);
+    size_t offset = 0;
     std::vector<float> temp;
     temp.resize(_componentCount);
 
@@ -79,7 +79,7 @@ void setKeyframeValueFromSampler(Keyframe<T> &_keyframe, bool _isSampleCubic, si
             temp[j] = _floatValues[baseIndex + offset++];
         }
         CubicKeyframe<T> &keyframe = static_cast<CubicKeyframe<T> &>(_keyframe);
-        memcpy(&keyframe.m_inTangent, &temp, sizeof(float) * _componentCount);
+        memcpy(&keyframe.m_inTangent, &temp[0], sizeof(float) * _componentCount);
     }
 
     // set current keyframe value
@@ -87,7 +87,7 @@ void setKeyframeValueFromSampler(Keyframe<T> &_keyframe, bool _isSampleCubic, si
     {
         temp[j] = _floatValues[baseIndex + offset++];
     }
-    memcpy(&_keyframe.m_value, &temp, sizeof(float) * _componentCount);
+    memcpy(&_keyframe.m_value, &temp[0], sizeof(float) * _componentCount);
 
     // set current keyframe out tangent
     if (_isSampleCubic)
@@ -97,7 +97,7 @@ void setKeyframeValueFromSampler(Keyframe<T> &_keyframe, bool _isSampleCubic, si
             temp[j] = _floatValues[baseIndex + offset++];
         }
         CubicKeyframe<T> &keyframe = static_cast<CubicKeyframe<T> &>(_keyframe);
-        memcpy(&keyframe.m_outTangent, &temp, sizeof(float) * _componentCount);
+        memcpy(&keyframe.m_outTangent, &temp[0], sizeof(float) * _componentCount);
     }
 }
 
@@ -201,21 +201,21 @@ std::vector<AnimationClip> loadAnimationClips(cgltf_data *_data)
             cgltf_node *node = channel.target_node;
             size_t nodeId = getNodeIndex(node, _data->nodes, _data->nodes_count);
 
-            AnimatedJoint &animatedJoint = res[i][nodeId];
-            animatedJoint.m_jointID = nodeId;
-            animatedJoint.m_jointName = node->name;
+            JointTrack &jointTrack = res[i][nodeId];
+            jointTrack.setJointID(nodeId);
+            jointTrack.setJointName(node->name);
 
             if (channel.target_path == cgltf_animation_path_type_translation)
             {
-                setTrackFromChannel<Vector3>(animatedJoint.m_positionTrack, channel, 3);
+                setTrackFromChannel<Vector3>(jointTrack.getPositionTrack(), channel, 3);
             }
             else if (channel.target_path == cgltf_animation_path_type_scale)
             {
-                setTrackFromChannel<Vector3>(animatedJoint.m_scaleTrack, channel, 3);
+                setTrackFromChannel<Vector3>(jointTrack.getScaleTrack(), channel, 3);
             }
             else if (channel.target_path == cgltf_animation_path_type_rotation)
             {
-                setTrackFromChannel<Quaternion>(animatedJoint.m_rotationTrack, channel, 4);
+                setTrackFromChannel<Quaternion>(jointTrack.getRotationTrack(), channel, 4);
             }
         }
 
@@ -270,7 +270,7 @@ Pose loadBindPose(cgltf_data *_data)
             Transform bindTransform = mat4ToTransform(bindMatrix);
             // Set that transform in the worldBindJoints
             cgltf_node *jointNode = skin->joints[j];
-            int jointIndex = getNodeIndex(jointNode, _data->nodes, jointSize);
+            size_t jointIndex = getNodeIndex(jointNode, _data->nodes, jointSize);
             worldBindJoints[jointIndex] = bindTransform;
         }
     }

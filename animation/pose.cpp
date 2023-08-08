@@ -54,38 +54,38 @@ size_t Pose::getJointsSize() const
     return m_parents.size();
 }
 
-int Pose::getParent(size_t _index) const
+int Pose::getParent(size_t _jointID) const
 {
-    return m_parents[_index];
+    return m_parents[_jointID];
 }
 
-void Pose::setParent(size_t _index, size_t _parent)
+void Pose::setParent(size_t _jointID, size_t _parentJointID)
 {
-    m_parents[_index] = _parent;
+    m_parents[_jointID] = _parentJointID;
 }
 
-Transform Pose::getLocalTransfrom(size_t _index) const
+Transform Pose::getLocalTransfrom(size_t _jointID) const
 {
-    return m_joints[_index];
+    return m_joints[_jointID];
 }
 
-void Pose::setLocalTransfrom(size_t _index, const Transform &_transfrom)
+void Pose::setLocalTransfrom(size_t _jointID, const Transform &_transfrom)
 {
-    m_joints[_index] = _transfrom;
+    m_joints[_jointID] = _transfrom;
 }
 
-Transform Pose::getGlobalTransform(size_t _index) const
+Transform Pose::getGlobalTransform(size_t _jointID) const
 {
-    // int curIndex = _index;
+    // int curIndex = _jointID;
     // int parentIndex = m_parents[curIndex];
-    Transform res = m_joints[_index];
+    Transform res = m_joints[_jointID];
     // while (parentIndex >= 0)
     // {
     //     res = getTargetSpaceTransform(m_joints[parentIndex], m_joints[curIndex]);
     //     curIndex = parentIndex;
     //     parentIndex = m_parents[parentIndex];
     // }
-    for (int parent = m_parents[_index]; parent >= 0; parent = m_parents[parent])
+    for (int parent = m_parents[_jointID]; parent >= 0; parent = m_parents[parent])
     {
         res = getTargetSpaceTransform(m_joints[parent], res);
     }
@@ -93,9 +93,9 @@ Transform Pose::getGlobalTransform(size_t _index) const
     return res;
 }
 
-Transform Pose::operator[](size_t _index) const
+Transform Pose::operator[](size_t _jointID) const
 {
-    return getGlobalTransform(_index);
+    return getGlobalTransform(_jointID);
 }
 
 void Pose::getMatrixPalette(std::vector<Matrix4> &_out) const

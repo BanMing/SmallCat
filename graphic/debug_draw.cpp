@@ -1,7 +1,9 @@
 #include "debug_draw.h"
 
-void DebugDraw::drawPose(const Pose &_pose)
+void DebugDraw::drawPose(const Pose &_pose, uint32_t _abgr /*= 0xffffffff*/)
 {
+    push();
+    setColor(_abgr);
     const uint32_t jointNum = (uint32_t)_pose.getJointsSize();
     m_poseVertices.resize(jointNum * 2);
     for (uint32_t i = 0; i < jointNum; i++)
@@ -16,4 +18,5 @@ void DebugDraw::drawPose(const Pose &_pose)
         }
     }
     drawLineList(jointNum * 2, &m_poseVertices[0]);
+    pop();
 }

@@ -35,7 +35,7 @@ void PoseSample::onRender(float _inAspectRatio)
 {
     DebugDraw dd;
     dd.begin(0);
-    dd.drawPose(m_restPose);
+    dd.drawPose(m_restPose, 0xfff0c0ff);
     dd.end();
 }
 

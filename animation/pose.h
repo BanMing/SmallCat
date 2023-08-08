@@ -20,14 +20,14 @@ public:
     void resizeJoints(size_t _size);
     size_t getJointsSize() const;
 
-    int getParent(size_t _index) const;
-    void setParent(size_t _index, size_t _parent);
+    int getParent(size_t _jointID) const;
+    void setParent(size_t _jointID, size_t _parentJointID);
 
-    Transform getLocalTransfrom(size_t _index) const;
-    void setLocalTransfrom(size_t _index, const Transform &_transfrom);
+    Transform getLocalTransfrom(size_t _jointID) const;
+    void setLocalTransfrom(size_t _jointID, const Transform &_transfrom);
 
-    Transform getGlobalTransform(size_t _index) const;
-    Transform operator[](size_t _index) const;
+    Transform getGlobalTransform(size_t _jointID) const;
+    Transform operator[](size_t _jointID) const;
 
     void getMatrixPalette(std::vector<Matrix4> &_out) const;
 };

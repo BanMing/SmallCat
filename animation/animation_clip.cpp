@@ -6,7 +6,7 @@
 AnimationClip ::AnimationClip()
 {
     m_clipName = "No Name";
-    m_isLooping = false;
+    m_isLooping = true;
     m_duration = 0.0f;
     m_startTime = 0.0f;
     m_endTime = 0.0f;
@@ -18,7 +18,7 @@ AnimationClip::~AnimationClip()
 
 size_t AnimationClip::size() const
 {
-    return m_animated_joints.size();
+    return m_jointsTrack.size();
 }
 
 float AnimationClip::clampTime(float _inTime) const
@@ -42,20 +42,20 @@ float AnimationClip::clampTime(float _inTime) const
     return _inTime;
 }
 
-AnimatedJoint &AnimationClip ::operator[](size_t _jointID)
+JointTrack &AnimationClip ::operator[](size_t _jointID)
 {
-    for (size_t i = 0; i < m_animated_joints.size(); i++)
+    for (size_t i = 0; i < m_jointsTrack.size(); i++)
     {
-        if (m_animated_joints[i].m_jointID == _jointID)
+        if (m_jointsTrack[i].getJointID() == _jointID)
         {
-            return m_animated_joints[i];
+            return m_jointsTrack[i];
         }
     }
 
-    AnimatedJoint newAnimatedJoint;
-    m_animated_joints.push_back(newAnimatedJoint);
+    JointTrack newAnimatedJoint;
+    m_jointsTrack.push_back(newAnimatedJoint);
 
-    return m_animated_joints[m_animated_joints.size() - 1];
+    return m_jointsTrack[m_jointsTrack.size() - 1];
 }
 
 void AnimationClip ::setName(const std::string &_newName)
@@ -73,10 +73,10 @@ void AnimationClip ::updateDuration()
     m_startTime = kMaxFloat;
     m_endTime = 0;
 
-    for (size_t i = 0; i < m_animated_joints.size(); i++)
+    for (size_t i = 0; i < m_jointsTrack.size(); i++)
     {
-        float trackEndTime = m_animated_joints[i].m_positionTrack.getEndTime();
-        float trackStartTime = m_animated_joints[i].m_positionTrack.getStartTime();
+        float trackEndTime = m_jointsTrack[i].getEndTime();
+        float trackStartTime = m_jointsTrack[i].getStartTime();
         m_startTime = m_startTime < trackStartTime ? m_startTime : trackStartTime;
         m_endTime = m_endTime > trackEndTime ? m_endTime : trackEndTime;
     }
@@ -100,54 +100,22 @@ void AnimationClip ::setLooping(bool _isLooping)
     m_isLooping = _isLooping;
 }
 
-void AnimationClip ::sampleAniamtion(float _inTime, Pose &_outPose) const
+float AnimationClip ::sample(float _inTime, Pose &_outPose) const
 {
-    // float inTime = clampTime(_inTime);
+    if (getDuration() == 0.0f)
+    {
+        return 0.0f;
+    }
 
-    // for (size_t i = 0; i < m_animated_joints.size(); i++)
-    // {
-    //     // Do binary search for keyframe
-    //     int high = (int)m_animated_joints[i].m_keyframes.size();
-    //     int low = -1;
-    //     while (high - low > 1)
-    //     {
-    //         int probe = (high + low) / 2;
-    //         if (m_animated_joints[i].m_keyframes[probe].m_time < inTime)
-    //         {
-    //             low = probe;
-    //         }
-    //         else
-    //         {
-    //             high = probe;
-    //         }
-    //     }
+    float inTime = clampTime(_inTime);
 
-    //     if (low == -1)
-    //     {
-    //         // Before first key, return first key
-    //         _outPose.setLocalTransfrom(m_animated_joints[i].m_index,
-    //                                    m_animated_joints[i].m_keyframes.front().m_joint);
-    //     }
-    //     else if (high == (int)m_animated_joints[i].m_keyframes.size())
-    //     {
-    //         // Beyond last key, return last key
-    //         _outPose.setLocalTransfrom(m_animated_joints[i].m_index,
-    //                                    m_animated_joints[i].m_keyframes.back().m_joint);
-    //     }
-    //     else
-    //     {
-    //         // Interpolate
-    //         const Keyframe frame1 = m_animated_joints[i].m_keyframes[low];
-    //         const Keyframe frame2 = m_animated_joints[i].m_keyframes[low + 1];
+    for (size_t i = 0; i < m_jointsTrack.size(); i++)
+    {
+        size_t jointID = m_jointsTrack[i].getJointID();
+        Transform localJointTrans = _outPose.getLocalTransfrom(jointID);
+        Transform animatiedTrans = m_jointsTrack[i].sample(inTime, m_isLooping, localJointTrans);
+        _outPose.setLocalTransfrom(jointID, animatiedTrans);
+    }
 
-    //         float t = (inTime - frame1.m_time) / (frame2.m_time - frame1.m_time);
-
-    //         Transform curTrans;
-    //         curTrans.position = lerp(frame1.m_joint.position, frame2.m_joint.position, t);
-    //         curTrans.scale = lerp(frame1.m_joint.scale, frame2.m_joint.scale, t);
-
-    //         // rotation must be normaized
-    //         curTrans.rotation = slerp(frame1.m_joint.rotation, frame2.m_joint.rotation, t);
-    //     }
-    // }
+    return inTime;
 }

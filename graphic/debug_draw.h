@@ -11,6 +11,6 @@ private:
     std::vector<DdVertex> m_poseVertices;
 
 public:
-    void drawPose(const Pose &_pose);
+    void drawPose(const Pose &_pose, uint32_t _abgr = 0xffffffff);
 };
 #endif //_DEBUG_DRAW_H_

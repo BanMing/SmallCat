@@ -1,8 +1,7 @@
 #ifndef _ANIMATION_CLIP_H_
 #define _ANIMATION_CLIP_H_
 
-#include "animated_joint.h"
-#include "track.h"
+#include "joint_track.h"
 #include "pose.h"
 #include <vector>
 #include <string>
@@ -10,7 +9,7 @@
 class AnimationClip
 {
 protected:
-    std::vector<AnimatedJoint> m_animated_joints;
+    std::vector<JointTrack> m_jointsTrack;
     std::string m_clipName;
     bool m_isLooping;
     float m_duration;
@@ -24,7 +23,7 @@ public:
     AnimationClip();
     ~AnimationClip();
     size_t size() const;
-    AnimatedJoint &operator[](size_t _jointID);
+    JointTrack &operator[](size_t _jointID);
 
     void setName(const std::string &_newName);
     std::string &getName() ;
@@ -35,7 +34,7 @@ public:
     bool isLooping() const;
     void setLooping(bool _isLooping);
 
-    void sampleAniamtion(float _inTime, Pose &_outPose) const;
+    float sample(float _inTime, Pose &_outPose) const;
 };
 
 #endif //_ANIMATION_CLIP_H_

@@ -11,7 +11,9 @@ class AnimationClipSample : public Application
 protected:
     Pose m_curPose;
     Pose m_restPose;
+    int m_curPlayClipIndex;
     std::vector<AnimationClip> m_clips;
+    float m_curPlaybackTime;
 
 public:
     AnimationClipSample(const char *_name, const char *_description)
