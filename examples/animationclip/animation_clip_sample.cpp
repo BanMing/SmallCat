@@ -17,6 +17,10 @@ void AnimationClipSample::onInit()
 
     m_curPlayClipIndex = 0;
     m_curPlaybackTime = 0;
+    for (size_t i = 0; i < m_clips.size(); i++)
+    {
+        m_clipNames += m_clips[i].getName() + '\0';
+    }
 }
 
 void AnimationClipSample::onShutdown()
@@ -54,4 +58,14 @@ void AnimationClipSample::onRender(float _inAspectRatio)
 
 void AnimationClipSample::onGui()
 {
+    ImGui::ShowDemoWindow();
+    ImGui::SetNextWindowPos(
+        ImVec2(m_width - 310.0f, 50.0f), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(
+        ImVec2(300.0f, 210.0f), ImGuiCond_FirstUseEver);
+
+    ImGui::Begin("Animation Clips");
+    ImGui::Text("Playback Time: %f", m_curPlaybackTime);
+    ImGui::Combo("Current Clip", &m_curPlayClipIndex, m_clipNames.c_str());
+    ImGui::End();
 }

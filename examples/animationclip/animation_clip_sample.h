@@ -14,7 +14,7 @@ protected:
     int m_curPlayClipIndex;
     std::vector<AnimationClip> m_clips;
     float m_curPlaybackTime;
-
+std::string m_clipNames;
 public:
     AnimationClipSample(const char *_name, const char *_description)
         : Application(_name, _description)
